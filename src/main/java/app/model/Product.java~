@@ -1,0 +1,48 @@
+package app.model;
+
+import java.math.BigDecimal;
+
+public class Product {
+    private Integer id;
+    private String name;
+    private BigDecimal price;
+    private int quantity;
+    private Integer categoryId;
+    private String imageUrl;
+
+
+    public Product() {}
+
+    public Product(Integer id, String name, BigDecimal price, int quantity, Integer categoryId, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.categoryId = categoryId;
+        this.imageUrl = imageUrl;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+}
