@@ -11,12 +11,12 @@ public class ListProductsCommand implements Command {
 
     @Override
     public String getName() {
-        return "products";
+        return "product list";
     }
 
     @Override
     public String getDescription() {
-        return "products [--category <id>] [--search <название>] — список товаров";
+        return "product list [--category <id>] [--search <название>] — список товаров";
     }
 
     @Override
@@ -28,16 +28,16 @@ public class ListProductsCommand implements Command {
     public void execute(CommandContext ctx, String[] args) {
         ProductService productService = ctx.getProductService();
         List<Product> products;
-        if (args.length >= 3 && "--category".equals(args[1])) {
+        if (args.length >= 4 && "--category".equals(args[2])) {
             try {
-                int categoryId = Integer.parseInt(args[2]);
+                int categoryId = Integer.parseInt(args[3]);
                 products = productService.findByCategoryId(categoryId);
             } catch (NumberFormatException e) {
                 ctx.getOut().println("Неверный id категории.");
                 return;
             }
-        } else if (args.length >= 3 && "--search".equals(args[1])) {
-            String name = args[2];
+        } else if (args.length >= 4 && "--search".equals(args[2])) {
+            String name = args[3];
             products = productService.findByNameContaining(name);
         } else {
             products = productService.findAll();

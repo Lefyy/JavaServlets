@@ -11,6 +11,8 @@ import app.service.auth.*;
 import app.service.impl.*;
 import app.service.impl.auth.AuthContextImpl;
 import app.service.impl.auth.AuthServiceImpl;
+import app.service.impl.security.Pbkdf2PasswordHasher;
+import app.service.security.PasswordHasher;
 
 import java.io.PrintStream;
 import java.util.Optional;
@@ -98,16 +100,23 @@ public class Main {
                 out.println("До свидания.");
                 break;
             }
+
             String[] parts = line.split("\\s+");
-            String cmdName = parts[0];
-            Optional<Command> cmdOpt = registry.find(cmdName);
+            String relation = parts[0].toLowerCase();
+            String action = parts.length > 1 ? parts[1].toLowerCase() : null;
+            String cmdPairForMessage = "<" + relation + " " + (action != null ? action : "?") + ">";
+            String cmdKey = action != null
+                    ? relation + " " + action
+                    : CommandRegistry.systemKey(relation);
+
+            Optional<Command> cmdOpt = registry.find(cmdKey);
             if (cmdOpt.isEmpty()) {
-                out.println("Неизвестная команда: " + cmdName + ". Введите help.");
+                out.println("Неизвестная команда: " + cmdPairForMessage + ". Введите help.");
                 continue;
             }
             Command cmd = cmdOpt.get();
             if (!registry.canExecute(cmd, authContext.getCurrentCustomer())) {
-                out.println("Нет доступа к команде: " + cmdName);
+                out.println("Нет доступа к команде: " + cmdPairForMessage);
                 continue;
             }
             try {

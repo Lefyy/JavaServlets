@@ -8,12 +8,12 @@ public class StaffOrderStatusDeleteCommand implements Command {
 
     @Override
     public String getName() {
-        return "order_status_delete";
+        return "order_status delete";
     }
 
     @Override
     public String getDescription() {
-        return "order_status_delete <id> — удалить статус заказа (staff)";
+        return "order_status delete <id> — удалить статус заказа (staff)";
     }
 
     @Override
@@ -23,12 +23,12 @@ public class StaffOrderStatusDeleteCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 2) {
-            ctx.getOut().println("Использование: order_status_delete <id>");
+        if (args.length < 3) {
+            ctx.getOut().println("Использование: order_status delete <id>");
             return;
         }
         try {
-            int id = Integer.parseInt(args[1]);
+            int id = Integer.parseInt(args[2]);
             boolean ok = ctx.getOrderStatusService().delete(id);
             ctx.getOut().println(ok ? "Статус удалён." : "Статус не найден.");
         } catch (NumberFormatException e) {

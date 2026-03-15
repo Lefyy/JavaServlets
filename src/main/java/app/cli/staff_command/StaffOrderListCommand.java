@@ -12,12 +12,12 @@ public class StaffOrderListCommand implements Command {
 
     @Override
     public String getName() {
-        return "orders_all";
+        return "order list-all";
     }
 
     @Override
     public String getDescription() {
-        return "orders_all — список всех заказов (staff)";
+        return "orders list-all — список всех заказов (staff)";
     }
 
     @Override

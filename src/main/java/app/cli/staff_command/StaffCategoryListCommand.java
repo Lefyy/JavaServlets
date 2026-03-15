@@ -11,12 +11,12 @@ public class StaffCategoryListCommand implements Command {
 
     @Override
     public String getName() {
-        return "categories";
+        return "category list";
     }
 
     @Override
     public String getDescription() {
-        return "categories — список категорий (staff)";
+        return "category list — список категорий (staff)";
     }
 
     @Override

@@ -9,12 +9,12 @@ public class StaffCategoryCreateCommand implements Command {
 
     @Override
     public String getName() {
-        return "category_create";
+        return "category create";
     }
 
     @Override
     public String getDescription() {
-        return "category_create <name> — создать категорию (staff)";
+        return "category create <name> — создать категорию (staff)";
     }
 
     @Override
@@ -24,12 +24,12 @@ public class StaffCategoryCreateCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 2) {
-            ctx.getOut().println("Использование: category_create <name>");
+        if (args.length < 3) {
+            ctx.getOut().println("Использование: category create <name>");
             return;
         }
         Category c = new Category();
-        c.setName(args[1]);
+        c.setName(args[2]);
         ctx.getCategoryService().save(c);
         ctx.getOut().println("Категория создана, id=" + c.getId());
     }

@@ -14,12 +14,12 @@ public class ListMyOrdersCommand implements Command {
 
     @Override
     public String getName() {
-        return "orders";
+        return "order list-my";
     }
 
     @Override
     public String getDescription() {
-        return "orders — список моих заказов";
+        return "order list-my — список моих заказов";
     }
 
     @Override

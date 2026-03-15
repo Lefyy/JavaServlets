@@ -11,12 +11,12 @@ public class StaffCustomerUpdateCommand implements Command {
 
     @Override
     public String getName() {
-        return "customer_update";
+        return "customer update";
     }
 
     @Override
     public String getDescription() {
-        return "customer_update <id> <name> <email> <password> <is_staff true|false> — обновить покупателя (staff)";
+        return "customer update <id> <name> <email> <password> <is_staff true|false> — обновить покупателя (staff)";
     }
 
     @Override
@@ -26,21 +26,21 @@ public class StaffCustomerUpdateCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 6) {
-            ctx.getOut().println("Использование: customer_update <id> <name> <email> <password> <is_staff>");
+        if (args.length < 7) {
+            ctx.getOut().println("Использование: customer update <id> <name> <email> <password> <is_staff>");
             return;
         }
         int id;
         try {
-            id = Integer.parseInt(args[1]);
+            id = Integer.parseInt(args[2]);
         } catch (NumberFormatException e) {
             ctx.getOut().println("Неверный id.");
             return;
         }
-        String name = args[2];
-        String email = args[3];
-        String password = args[4];
-        boolean isStaff = Boolean.parseBoolean(args[5]);
+        String name = args[3];
+        String email = args[4];
+        String password = args[5];
+        boolean isStaff = Boolean.parseBoolean(args[6]);
         CustomerService svc = ctx.getCustomerService();
         Optional<Customer> opt = svc.findById(id);
         if (opt.isEmpty()) {

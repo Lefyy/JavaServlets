@@ -10,12 +10,12 @@ public class StaffOrderStatusListCommand implements Command {
 
     @Override
     public String getName() {
-        return "order_statuses";
+        return "order_status list";
     }
 
     @Override
     public String getDescription() {
-        return "order_statuses — список статусов заказов (staff)";
+        return "order_status list — список статусов заказов (staff)";
     }
 
     @Override

@@ -13,7 +13,7 @@ public class CreateOrderCommand implements Command {
 
     @Override
     public String getName() {
-        return "order";
+        return "order create";
     }
 
     @Override
@@ -33,7 +33,7 @@ public class CreateOrderCommand implements Command {
             ctx.getOut().println("Необходимо войти в систему (login).");
             return;
         }
-        if (args.length < 3 || !"create".equals(args[1])) {
+        if (args.length < 3) {
             ctx.getOut().println("Использование: order create <productId:quantity> [productId:quantity ...]");
             return;
         }

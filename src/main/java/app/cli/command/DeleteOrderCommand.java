@@ -9,12 +9,12 @@ public class DeleteOrderCommand implements Command {
 
     @Override
     public String getName() {
-        return "order_delete";
+        return "order delete";
     }
 
     @Override
     public String getDescription() {
-        return "order_delete <orderId> — удалить свой заказ";
+        return "order delete <orderId> — удалить свой заказ";
     }
 
     @Override
@@ -30,11 +30,11 @@ public class DeleteOrderCommand implements Command {
             return;
         }
         if (args.length < 2) {
-            ctx.getOut().println("Использование: order_delete <orderId>");
+            ctx.getOut().println("Использование: order delete <orderId>");
             return;
         }
         try {
-            int orderId = Integer.parseInt(args[1]);
+            int orderId = Integer.parseInt(args[2]);
             boolean deleted = ctx.getOrderService().delete(orderId, current.getId(), false);
             if (deleted) {
                 ctx.getOut().println("Заказ удалён.");

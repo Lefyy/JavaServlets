@@ -2,18 +2,17 @@ package app.cli.staff_command;
 
 import app.cli.Command;
 import app.cli.CommandContext;
-import app.service.ProductService;
 
 public class StaffProductDeleteCommand implements Command {
 
     @Override
     public String getName() {
-        return "product_delete";
+        return "product delete";
     }
 
     @Override
     public String getDescription() {
-        return "product_delete <id> — удалить товар (staff)";
+        return "product delete <id> — удалить товар (staff)";
     }
 
     @Override
@@ -23,12 +22,12 @@ public class StaffProductDeleteCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 2) {
-            ctx.getOut().println("Использование: product_delete <id>");
+        if (args.length < 3) {
+            ctx.getOut().println("Использование: product delete <id>");
             return;
         }
         try {
-            int id = Integer.parseInt(args[1]);
+            int id = Integer.parseInt(args[2]);
             boolean ok = ctx.getProductService().delete(id);
             ctx.getOut().println(ok ? "Товар удалён." : "Товар не найден.");
         } catch (NumberFormatException e) {

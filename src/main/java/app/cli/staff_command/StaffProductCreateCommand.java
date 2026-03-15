@@ -3,7 +3,6 @@ package app.cli.staff_command;
 import app.model.Product;
 import app.cli.Command;
 import app.cli.CommandContext;
-import app.service.ProductService;
 
 import java.math.BigDecimal;
 
@@ -11,12 +10,12 @@ public class StaffProductCreateCommand implements Command {
 
     @Override
     public String getName() {
-        return "product_create";
+        return "product create";
     }
 
     @Override
     public String getDescription() {
-        return "product_create <name> <price> <quantity> <category_id> [image_url] — создать товар (staff)";
+        return "product create <name> <price> <quantity> <category_id> [image_url] — создать товар (staff)";
     }
 
     @Override
@@ -26,16 +25,16 @@ public class StaffProductCreateCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 5) {
-            ctx.getOut().println("Использование: product_create <name> <price> <quantity> <category_id> [image_url]");
+        if (args.length < 6) {
+            ctx.getOut().println("Использование: product create <name> <price> <quantity> <category_id> [image_url]");
             return;
         }
         try {
-            String name = args[1];
-            BigDecimal price = new BigDecimal(args[2]);
-            int quantity = Integer.parseInt(args[3]);
-            int categoryId = Integer.parseInt(args[4]);
-            String imageUrl = args.length > 5 ? args[5] : null;
+            String name = args[2];
+            BigDecimal price = new BigDecimal(args[3]);
+            int quantity = Integer.parseInt(args[4]);
+            int categoryId = Integer.parseInt(args[5]);
+            String imageUrl = args.length > 6 ? args[6] : null;
             Product p = new Product();
             p.setName(name);
             p.setPrice(price);

@@ -9,7 +9,7 @@ public class UpdateProfileCommand implements Command {
 
     @Override
     public String getName() {
-        return "profile";
+        return "profile update";
     }
 
     @Override
@@ -29,7 +29,7 @@ public class UpdateProfileCommand implements Command {
             ctx.getOut().println("Необходимо войти в систему (login).");
             return;
         }
-        if (args.length < 2 || !"update".equals(args[1])) {
+        if (args.length < 2) {
             ctx.getOut().println("Использование: profile update [--name <имя>] [--email <email>] [--password <пароль>]");
             return;
         }

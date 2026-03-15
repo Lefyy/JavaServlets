@@ -11,12 +11,12 @@ public class StaffCustomerListCommand implements Command {
 
     @Override
     public String getName() {
-        return "customers";
+        return "customer list";
     }
 
     @Override
     public String getDescription() {
-        return "customers — список всех покупателей (staff)";
+        return "customer list — список всех покупателей (staff)";
     }
 
     @Override

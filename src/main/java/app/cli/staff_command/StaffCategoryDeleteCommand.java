@@ -8,12 +8,12 @@ public class StaffCategoryDeleteCommand implements Command {
 
     @Override
     public String getName() {
-        return "category_delete";
+        return "category delete";
     }
 
     @Override
     public String getDescription() {
-        return "category_delete <id> — удалить категорию (staff)";
+        return "category delete <id> — удалить категорию (staff)";
     }
 
     @Override
@@ -23,12 +23,12 @@ public class StaffCategoryDeleteCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 2) {
-            ctx.getOut().println("Использование: category_delete <id>");
+        if (args.length < 3) {
+            ctx.getOut().println("Использование: category delete <id>");
             return;
         }
         try {
-            int id = Integer.parseInt(args[1]);
+            int id = Integer.parseInt(args[2]);
             boolean ok = ctx.getCategoryService().delete(id);
             ctx.getOut().println(ok ? "Категория удалена." : "Категория не найдена.");
         } catch (NumberFormatException e) {
