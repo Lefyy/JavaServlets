@@ -52,6 +52,7 @@ public class Main {
         registry.register(new CreateOrderCommand());
         registry.register(new ListMyOrdersCommand());
         registry.register(new DeleteOrderCommand());
+        registry.register(new ReadProfileCommand());
         registry.register(new UpdateProfileCommand());
         registry.register(new StaffCustomerListCommand());
         registry.register(new StaffCustomerCreateCommand());

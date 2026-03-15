@@ -5,29 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47475468-a2fd-4596-bbd2-8f8a9c21364e" name="Changes" comment="initial commit">
+      <change afterPath="$PROJECT_DIR$/src/main/java/app/cli/command/ReadProfileCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/CommandRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/CommandRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/command/CreateOrderCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/command/CreateOrderCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/command/DeleteOrderCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/command/DeleteOrderCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/command/ListMyOrdersCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/command/ListMyOrdersCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/command/ListProductsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/command/ListProductsCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/command/UpdateProfileCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/command/UpdateProfileCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCategoryCreateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCategoryCreateCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCategoryDeleteCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCategoryDeleteCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCategoryListCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCategoryListCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCategoryUpdateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCategoryUpdateCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCustomerCreateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCustomerCreateCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCustomerDeleteCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCustomerDeleteCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCustomerListCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCustomerListCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCustomerUpdateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffCustomerUpdateCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderDeleteCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderDeleteCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderListCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderListCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderStatusCreateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderStatusCreateCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderStatusDeleteCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderStatusDeleteCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderStatusListCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderStatusListCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderStatusUpdateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderStatusUpdateCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderUpdateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/staff_command/StaffOrderUpdateCommand.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
