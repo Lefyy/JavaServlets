@@ -4,7 +4,10 @@ import app.cli.Command;
 import app.cli.CommandContext;
 import app.model.Customer;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 public class HelpCommand implements Command {
 
@@ -34,12 +37,14 @@ public class HelpCommand implements Command {
         Customer current = ctx.getCurrentCustomer();
         boolean isStaff = current != null && current.isStaff();
         ctx.getOut().println("Доступные команды:");
-        for (Command cmd : allCommands) {
+        List<Command> sortedCommands = new ArrayList<>(allCommands);
+        sortedCommands.sort(Comparator.comparing(Command::getName));
+
+        for (Command cmd : sortedCommands) {
             if (cmd.isStaffOnly() && !isStaff) {
                 continue;
             }
             ctx.getOut().println("  " + cmd.getDescription());
         }
-        ctx.getOut().println("  help — эта справка");
     }
 }
