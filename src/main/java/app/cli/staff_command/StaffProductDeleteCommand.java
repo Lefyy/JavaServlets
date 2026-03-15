@@ -2,6 +2,7 @@ package app.cli.staff_command;
 
 import app.cli.Command;
 import app.cli.CommandContext;
+import app.cli.FlagArgs;
 
 public class StaffProductDeleteCommand implements Command {
 
@@ -12,7 +13,7 @@ public class StaffProductDeleteCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "product delete <id> — удалить товар (staff)";
+        return "product delete --id <id> — удалить товар (staff)";
     }
 
     @Override
@@ -22,12 +23,19 @@ public class StaffProductDeleteCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 3) {
-            ctx.getOut().println("Использование: product delete <id>");
+        FlagArgs flags = FlagArgs.parse(args, 2);
+        if (flags.getError() != null) {
+            ctx.getOut().println(flags.getError());
             return;
         }
+        String rawId = flags.require("--id");
+        if (rawId == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+
         try {
-            int id = Integer.parseInt(args[2]);
+            int id = Integer.parseInt(rawId);
             boolean ok = ctx.getProductService().delete(id);
             ctx.getOut().println(ok ? "Товар удалён." : "Товар не найден.");
         } catch (NumberFormatException e) {

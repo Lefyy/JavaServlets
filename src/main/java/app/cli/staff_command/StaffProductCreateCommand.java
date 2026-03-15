@@ -1,5 +1,6 @@
 package app.cli.staff_command;
 
+import app.cli.FlagArgs;
 import app.model.Product;
 import app.cli.Command;
 import app.cli.CommandContext;
@@ -15,8 +16,7 @@ public class StaffProductCreateCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "product create <name> <price> <quantity> <category_id> [image_url] — создать товар (staff)";
-    }
+        return "product create --name <name> --price <price> --quantity <qty> --category-id <id> [--image-url <url>] — создать товар (staff)";    }
 
     @Override
     public boolean isStaffOnly() {
@@ -25,16 +25,38 @@ public class StaffProductCreateCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 6) {
-            ctx.getOut().println("Использование: product create <name> <price> <quantity> <category_id> [image_url]");
+        FlagArgs flags = FlagArgs.parse(args, 2);
+        if (flags.getError() != null) {
+            ctx.getOut().println(flags.getError());
             return;
         }
+        String name = flags.require("--name");
+        if (name == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String rawPrice = flags.require("--price");
+        if (rawPrice == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String rawQuantity = flags.require("--quantity");
+        if (rawQuantity == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String rawCategoryId = flags.require("--category-id");
+        if (rawCategoryId == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+
         try {
-            String name = args[2];
-            BigDecimal price = new BigDecimal(args[3]);
-            int quantity = Integer.parseInt(args[4]);
-            int categoryId = Integer.parseInt(args[5]);
-            String imageUrl = args.length > 6 ? args[6] : null;
+            BigDecimal price = new BigDecimal(rawPrice);
+            int quantity = Integer.parseInt(rawQuantity);
+            int categoryId = Integer.parseInt(rawCategoryId);
+            String imageUrl = flags.optional("--image-url");
+
             Product p = new Product();
             p.setName(name);
             p.setPrice(price);

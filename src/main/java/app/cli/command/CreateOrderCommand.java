@@ -2,6 +2,7 @@ package app.cli.command;
 
 import app.cli.Command;
 import app.cli.CommandContext;
+import app.cli.FlagArgs;
 import app.model.Customer;
 import app.model.Order;
 import app.service.OrderService;
@@ -18,7 +19,7 @@ public class CreateOrderCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "order create <productId:quantity> [productId:quantity ...] — создать заказ";
+        return "order create --item <productId:quantity> [--item <productId:quantity> ...] — создать заказ";
     }
 
     @Override
@@ -33,13 +34,20 @@ public class CreateOrderCommand implements Command {
             ctx.getOut().println("Необходимо войти в систему (login).");
             return;
         }
-        if (args.length < 3) {
-            ctx.getOut().println("Использование: order create <productId:quantity> [productId:quantity ...]");
+        FlagArgs flags = FlagArgs.parse(args, 2);
+        if (flags.getError() != null) {
+            ctx.getOut().println(flags.getError());
             return;
         }
+
+        List<String> rawItems = flags.all("--item");
+        if (rawItems.isEmpty()) {
+            ctx.getOut().println("Не указан обязательный параметр --item");
+            return;
+        }
+
         List<OrderService.OrderItemDto> items = new ArrayList<>();
-        for (int i = 2; i < args.length; i++) {
-            String part = args[i];
+        for (String part : rawItems) {
             int colon = part.indexOf(':');
             if (colon <= 0) {
                 ctx.getOut().println("Формат позиции: productId:quantity, например 1:2");

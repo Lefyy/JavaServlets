@@ -1,5 +1,6 @@
 package app.cli.staff_command;
 
+import app.cli.FlagArgs;
 import app.model.Category;
 import app.service.CategoryService;
 import app.cli.Command;
@@ -14,7 +15,7 @@ public class StaffCategoryCreateCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "category create <name> — создать категорию (staff)";
+        return "category create --name <name> — создать категорию (staff)";
     }
 
     @Override
@@ -24,12 +25,18 @@ public class StaffCategoryCreateCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 3) {
-            ctx.getOut().println("Использование: category create <name>");
+        FlagArgs flags = FlagArgs.parse(args, 2);
+        if (flags.getError() != null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String name = flags.require("--name");
+        if (name == null) {
+            ctx.getOut().println(flags.getError());
             return;
         }
         Category c = new Category();
-        c.setName(args[2]);
+        c.setName(name);
         ctx.getCategoryService().save(c);
         ctx.getOut().println("Категория создана, id=" + c.getId());
     }

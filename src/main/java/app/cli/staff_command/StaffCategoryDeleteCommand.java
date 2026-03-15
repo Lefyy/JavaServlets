@@ -2,6 +2,7 @@ package app.cli.staff_command;
 
 import app.cli.Command;
 import app.cli.CommandContext;
+import app.cli.FlagArgs;
 import app.service.CategoryService;
 
 public class StaffCategoryDeleteCommand implements Command {
@@ -13,7 +14,7 @@ public class StaffCategoryDeleteCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "category delete <id> — удалить категорию (staff)";
+        return "category delete --id <id> — удалить категорию (staff)";
     }
 
     @Override
@@ -23,12 +24,18 @@ public class StaffCategoryDeleteCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 3) {
-            ctx.getOut().println("Использование: category delete <id>");
+        FlagArgs flags = FlagArgs.parse(args, 2);
+        if (flags.getError() != null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String rawId = flags.require("--id");
+        if (rawId == null) {
+            ctx.getOut().println(flags.getError());
             return;
         }
         try {
-            int id = Integer.parseInt(args[2]);
+            int id = Integer.parseInt(rawId);
             boolean ok = ctx.getCategoryService().delete(id);
             ctx.getOut().println(ok ? "Категория удалена." : "Категория не найдена.");
         } catch (NumberFormatException e) {

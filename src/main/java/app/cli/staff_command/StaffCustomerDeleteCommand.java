@@ -2,6 +2,7 @@ package app.cli.staff_command;
 
 import app.cli.Command;
 import app.cli.CommandContext;
+import app.cli.FlagArgs;
 import app.service.CustomerService;
 
 public class StaffCustomerDeleteCommand implements Command {
@@ -13,7 +14,7 @@ public class StaffCustomerDeleteCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "customer delete <id> — удалить покупателя (staff)";
+        return "customer delete --id <id> — удалить покупателя (staff)";
     }
 
     @Override
@@ -23,13 +24,20 @@ public class StaffCustomerDeleteCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 3) {
-            ctx.getOut().println("Использование: customer delete <id>");
+        FlagArgs flags = FlagArgs.parse(args, 2);
+        if (flags.getError() != null) {
+            ctx.getOut().println(flags.getError());
             return;
         }
+        String rawId = flags.require("--id");
+        if (rawId == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+
         int id;
         try {
-            id = Integer.parseInt(args[2]);
+            id = Integer.parseInt(rawId);
         } catch (NumberFormatException e) {
             ctx.getOut().println("Неверный id.");
             return;

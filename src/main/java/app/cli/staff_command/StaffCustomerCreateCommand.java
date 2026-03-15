@@ -1,5 +1,6 @@
 package app.cli.staff_command;
 
+import app.cli.FlagArgs;
 import app.model.Customer;
 import app.cli.Command;
 import app.cli.CommandContext;
@@ -13,8 +14,7 @@ public class StaffCustomerCreateCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "customer create <name> <email> <password> <is_staff true|false> — создать покупателя (staff)";
-    }
+        return "customer create --name <name> --email <email> --password <password> [--is-staff <true|false>] — создать покупателя (staff)";    }
 
     @Override
     public boolean isStaffOnly() {
@@ -23,14 +23,29 @@ public class StaffCustomerCreateCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 6) {
-            ctx.getOut().println("Использование: customer create <name> <email> <password> <is_staff true|false>");
+        FlagArgs flags = FlagArgs.parse(args, 2);
+        if (flags.getError() != null) {
+            ctx.getOut().println(flags.getError());
             return;
         }
-        String name = args[2];
-        String email = args[3];
-        String password = args[4];
-        boolean isStaff = Boolean.parseBoolean(args[5]);
+
+        String name = flags.require("--name");
+        if (name == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String email = flags.require("--email");
+        if (email == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String password = flags.require("--password");
+        if (password == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        boolean isStaff = Boolean.parseBoolean(flags.optional("--is-staff"));
+
         if (ctx.getCustomerService().existsByEmail(email)) {
             ctx.getOut().println("Email уже занят.");
             return;

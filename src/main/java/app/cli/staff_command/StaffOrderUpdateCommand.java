@@ -1,5 +1,6 @@
 package app.cli.staff_command;
 
+import app.cli.FlagArgs;
 import app.model.Order;
 import app.cli.Command;
 import app.cli.CommandContext;
@@ -15,7 +16,7 @@ public class StaffOrderUpdateCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "order update <id> <customer_id> <status_id> — обновить заказ (staff)";
+        return "order update --id <id> --customer-id <customer_id> --status-id <status_id> — обновить заказ (staff)";
     }
 
     @Override
@@ -25,14 +26,31 @@ public class StaffOrderUpdateCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 5) {
-            ctx.getOut().println("Использование: order update <id> <customer_id> <status_id>");
+        FlagArgs flags = FlagArgs.parse(args, 2);
+        if (flags.getError() != null) {
+            ctx.getOut().println(flags.getError());
             return;
         }
+        String rawId = flags.require("--id");
+        if (rawId == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String rawCustomerId = flags.require("--customer-id");
+        if (rawCustomerId == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String rawStatusId = flags.require("--status-id");
+        if (rawStatusId == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+
         try {
-            int id = Integer.parseInt(args[2]);
-            int customerId = Integer.parseInt(args[3]);
-            int statusId = Integer.parseInt(args[4]);
+            int id = Integer.parseInt(rawId);
+            int customerId = Integer.parseInt(rawCustomerId);
+            int statusId = Integer.parseInt(rawStatusId);
             Optional<Order> opt = ctx.getOrderService().findById(id);
             if (opt.isEmpty()) {
                 ctx.getOut().println("Заказ не найден.");

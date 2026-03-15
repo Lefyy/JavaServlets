@@ -2,6 +2,7 @@ package app.cli.command;
 
 import app.cli.Command;
 import app.cli.CommandContext;
+import app.cli.FlagArgs;
 import app.model.Customer;
 import app.service.CustomerService;
 
@@ -14,7 +15,7 @@ public class RegisterCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "register <name> <email> <password> — регистрация нового пользователя";
+        return "register --name <name> --email <email> --password <password> — регистрация нового пользователя";
     }
 
     @Override
@@ -24,21 +25,36 @@ public class RegisterCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 4) {
-            ctx.getOut().println("Использование: register <имя> <email> <пароль>");
+        FlagArgs flags = FlagArgs.parse(args, 1);
+        if (flags.getError() != null) {
+            ctx.getOut().println(flags.getError());
             return;
         }
-        String name = args[1];
-        String email = args[2].trim();
-        String password = args[3];
+
+        String name = flags.require("--name");
+        if (name == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String email = flags.require("--email");
+        if (email == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String password = flags.require("--password");
+        if (password == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+
         CustomerService customerService = ctx.getCustomerService();
-        if (customerService.existsByEmail(email)) {
+        if (customerService.existsByEmail(email.trim())) {
             ctx.getOut().println("Пользователь с таким email уже зарегистрирован.");
             return;
         }
         Customer customer = new Customer();
         customer.setName(name);
-        customer.setEmail(email);
+        customer.setEmail(email.trim());
         customer.setPassword(password);
         customer.setStaff(false);
         try {

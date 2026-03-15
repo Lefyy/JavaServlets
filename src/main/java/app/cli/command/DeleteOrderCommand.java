@@ -2,8 +2,8 @@ package app.cli.command;
 
 import app.cli.Command;
 import app.cli.CommandContext;
+import app.cli.FlagArgs;
 import app.model.Customer;
-import app.service.OrderService;
 
 public class DeleteOrderCommand implements Command {
 
@@ -14,7 +14,7 @@ public class DeleteOrderCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "order delete <orderId> — удалить свой заказ";
+        return "order delete --id <orderId> — удалить свой заказ";
     }
 
     @Override
@@ -29,12 +29,18 @@ public class DeleteOrderCommand implements Command {
             ctx.getOut().println("Необходимо войти в систему (login).");
             return;
         }
-        if (args.length < 2) {
-            ctx.getOut().println("Использование: order delete <orderId>");
+        FlagArgs flags = FlagArgs.parse(args, 2);
+        if (flags.getError() != null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String rawId = flags.require("--id");
+        if (rawId == null) {
+            ctx.getOut().println(flags.getError());
             return;
         }
         try {
-            int orderId = Integer.parseInt(args[2]);
+            int orderId = Integer.parseInt(rawId);
             boolean deleted = ctx.getOrderService().delete(orderId, current.getId(), false);
             if (deleted) {
                 ctx.getOut().println("Заказ удалён.");

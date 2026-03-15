@@ -1,5 +1,6 @@
 package app.cli.staff_command;
 
+import app.cli.FlagArgs;
 import app.model.Customer;
 import app.cli.Command;
 import app.cli.CommandContext;
@@ -16,7 +17,7 @@ public class StaffCustomerUpdateCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "customer update <id> <name> <email> <password> <is_staff true|false> — обновить покупателя (staff)";
+        return "customer update --id <id> --name <name> --email <email> --password <password> [--is-staff <true|false>] — обновить покупателя (staff)";
     }
 
     @Override
@@ -26,21 +27,43 @@ public class StaffCustomerUpdateCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 7) {
-            ctx.getOut().println("Использование: customer update <id> <name> <email> <password> <is_staff>");
+        FlagArgs flags = FlagArgs.parse(args, 2);
+        if (flags.getError() != null) {
+            ctx.getOut().println(flags.getError());
             return;
         }
+
+        String rawId = flags.require("--id");
+        if (rawId == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String name = flags.require("--name");
+        if (name == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String email = flags.require("--email");
+        if (email == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+        String password = flags.require("--password");
+        if (password == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+
         int id;
         try {
-            id = Integer.parseInt(args[2]);
+            id = Integer.parseInt(rawId);
         } catch (NumberFormatException e) {
             ctx.getOut().println("Неверный id.");
             return;
         }
-        String name = args[3];
-        String email = args[4];
-        String password = args[5];
-        boolean isStaff = Boolean.parseBoolean(args[6]);
+
+        boolean isStaff = Boolean.parseBoolean(flags.optional("--is-staff"));
+
         CustomerService svc = ctx.getCustomerService();
         Optional<Customer> opt = svc.findById(id);
         if (opt.isEmpty()) {

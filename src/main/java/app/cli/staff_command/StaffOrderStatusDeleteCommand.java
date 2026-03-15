@@ -2,6 +2,7 @@ package app.cli.staff_command;
 
 import app.cli.Command;
 import app.cli.CommandContext;
+import app.cli.FlagArgs;
 import app.service.OrderStatusService;
 
 public class StaffOrderStatusDeleteCommand implements Command {
@@ -13,7 +14,7 @@ public class StaffOrderStatusDeleteCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "order_status delete <id> — удалить статус заказа (staff)";
+        return "order_status delete --id <id> — удалить статус заказа (staff)";
     }
 
     @Override
@@ -23,12 +24,19 @@ public class StaffOrderStatusDeleteCommand implements Command {
 
     @Override
     public void execute(CommandContext ctx, String[] args) {
-        if (args.length < 3) {
-            ctx.getOut().println("Использование: order_status delete <id>");
+        FlagArgs flags = FlagArgs.parse(args, 2);
+        if (flags.getError() != null) {
+            ctx.getOut().println(flags.getError());
             return;
         }
+        String rawId = flags.require("--id");
+        if (rawId == null) {
+            ctx.getOut().println(flags.getError());
+            return;
+        }
+
         try {
-            int id = Integer.parseInt(args[2]);
+            int id = Integer.parseInt(rawId);
             boolean ok = ctx.getOrderStatusService().delete(id);
             ctx.getOut().println(ok ? "Статус удалён." : "Статус не найден.");
         } catch (NumberFormatException e) {
