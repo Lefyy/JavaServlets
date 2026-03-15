@@ -9,6 +9,8 @@ import app.repository.impl.*;
 import app.service.*;
 import app.service.auth.*;
 import app.service.impl.*;
+import app.service.impl.auth.AuthContextImpl;
+import app.service.impl.auth.AuthServiceImpl;
 
 import java.io.PrintStream;
 import java.util.Optional;
@@ -32,8 +34,9 @@ public class Main {
         CategoryRepository categoryRepository = new CategoryRepositoryImpl();
         OrderStatusRepository orderStatusRepository = new OrderStatusRepositoryImpl();
 
-        AuthService authService = new AuthServiceImpl(customerRepository, authContext);
-        CustomerService customerService = new CustomerServiceImpl(customerRepository);
+        PasswordHasher passwordHasher = new Pbkdf2PasswordHasher();
+        AuthService authService = new AuthServiceImpl(customerRepository, authContext, passwordHasher);
+        CustomerService customerService = new CustomerServiceImpl(customerRepository, passwordHasher);
         ProductService productService = new ProductServiceImpl(productRepository);
         OrderService orderService = new OrderServiceImpl(orderRepository, orderItemRepository, productRepository);
         CategoryService categoryService = new CategoryServiceImpl(categoryRepository);

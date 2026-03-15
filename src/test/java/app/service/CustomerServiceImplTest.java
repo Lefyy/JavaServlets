@@ -3,6 +3,7 @@ package app.service;
 import app.model.Customer;
 import app.repository.CustomerRepository;
 import app.service.impl.CustomerServiceImpl;
+import app.service.security.PasswordHasher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,11 +20,14 @@ class CustomerServiceImplTest {
     @Mock
     private CustomerRepository customerRepository;
 
+    @Mock
+    private PasswordHasher passwordHasher;
+
     private CustomerServiceImpl customerService;
 
     @BeforeEach
     void setUp() {
-        customerService = new CustomerServiceImpl(customerRepository);
+        customerService = new CustomerServiceImpl(customerRepository, passwordHasher);
     }
 
     @Test
@@ -33,8 +37,20 @@ class CustomerServiceImplTest {
     }
 
     @Test
+    void save_hashesPasswordBeforeSave() {
+        Customer customer = new Customer(null, "N", "n@mail.com", "raw", false);
+        when(passwordHasher.hash("raw")).thenReturn("hashed");
+
+        customerService.save(customer);
+
+        assertEquals("hashed", customer.getPassword());
+        verify(customerRepository).save(customer);
+    }
+
+    @Test
     void updateOwnProfile_updatesRepository() {
-        Customer current = new Customer(1, "Old", "old@mail.com", "oldpass", false);
+        Customer current = new Customer(1, "Old", "old@mail.com", "oldhash", false);
+        when(passwordHasher.hash("newpass")).thenReturn("newhash");
         ArgumentCaptor<Customer> captor = ArgumentCaptor.forClass(Customer.class);
         doNothing().when(customerRepository).update(captor.capture());
 
@@ -44,11 +60,11 @@ class CustomerServiceImplTest {
         assertEquals(1, updated.getId());
         assertEquals("New", updated.getName());
         assertEquals("new@mail.com", updated.getEmail());
-        assertEquals("newpass", updated.getPassword());
+        assertEquals("newhash", updated.getPassword());
         assertFalse(updated.isStaff());
         assertEquals("New", current.getName());
         assertEquals("new@mail.com", current.getEmail());
-        assertEquals("newpass", current.getPassword());
+        assertEquals("newhash", current.getPassword());
     }
 
     @Test

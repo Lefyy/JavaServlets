@@ -1,4 +1,4 @@
-package app.service.impl;
+package app.service.impl.auth;
 
 import app.model.Customer;
 import app.service.auth.AuthContext;

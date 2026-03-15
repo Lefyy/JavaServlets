@@ -3,6 +3,7 @@ package app.service.impl;
 import app.model.Customer;
 import app.repository.CustomerRepository;
 import app.service.CustomerService;
+import app.service.security.PasswordHasher;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +11,11 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final PasswordHasher passwordHasher;
 
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, PasswordHasher passwordHasher) {
         this.customerRepository = customerRepository;
+        this.passwordHasher = passwordHasher;
     }
 
     @Override
@@ -27,6 +30,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer save(Customer customer) {
+        if (customer.getPassword() != null) {
+            customer.setPassword(passwordHasher.hash(customer.getPassword()));
+        }
         return customerRepository.save(customer);
     }
 
@@ -45,11 +51,14 @@ public class CustomerServiceImpl implements CustomerService {
         if (currentCustomer == null || currentCustomer.getId() == null) {
             throw new IllegalArgumentException("Текущий пользователь не задан");
         }
+        String passwordToStore = password != null
+                ? passwordHasher.hash(password)
+                : currentCustomer.getPassword();
         Customer toUpdate = new Customer(
                 currentCustomer.getId(),
                 name != null ? name : currentCustomer.getName(),
                 email != null ? email : currentCustomer.getEmail(),
-                password != null ? password : currentCustomer.getPassword(),
+                passwordToStore,
                 currentCustomer.isStaff()
         );
         customerRepository.update(toUpdate);
