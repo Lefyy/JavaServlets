@@ -81,12 +81,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean delete(Integer orderId, Integer requestingCustomerId, boolean isStaff) {
-        Optional<Order> orderOpt = orderRepository.findById(orderId);
-        if (orderOpt.isEmpty()) {
-            return false;
-        }
-        Order order = orderOpt.get();
-        if (!isStaff && !order.getCustomerId().equals(requestingCustomerId)) {
+        if (!isStaff) {
             throw new SecurityException("Нет прав на удаление чужого заказа");
         }
         orderItemRepository.deleteByOrderId(orderId);

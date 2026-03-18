@@ -17,10 +17,6 @@ public interface CustomerService {
 
     boolean delete(Integer id);
 
-    /**
-     * Обновление только своих полей (name, email, password) для текущего пользователя.
-     * Проверка владельца выполняется по id текущего пользователя.
-     */
     void updateOwnProfile(Customer currentCustomer, String name, String email, String password);
 
     boolean existsByEmail(String email);

@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47475468-a2fd-4596-bbd2-8f8a9c21364e" name="Changes" comment="initial commit">
-      <change afterPath="$PROJECT_DIR$/src/main/java/app/cli/CliApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/CliApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/CliApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/Command.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/cli/CommandContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/cli/CommandContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/service/CustomerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/service/CustomerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/service/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/service/auth/AuthContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/service/auth/AuthContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/service/auth/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/service/auth/AuthService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

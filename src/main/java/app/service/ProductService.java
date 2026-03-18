@@ -15,12 +15,9 @@ public interface ProductService {
 
     List<Product> findByNameContaining(String name);
 
-    /** Только для staff: создание продукта */
     Product create(Product product);
 
-    /** Только для staff: обновление продукта */
     void update(Product product);
 
-    /** Только для staff: удаление продукта */
     boolean delete(Integer id);
 }

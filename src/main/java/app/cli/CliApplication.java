@@ -99,7 +99,6 @@ public class CliApplication {
         registry.register(new ListProductsCommand());
         registry.register(new CreateOrderCommand());
         registry.register(new ListMyOrdersCommand());
-        registry.register(new DeleteOrderCommand());
         registry.register(new ReadProfileCommand());
         registry.register(new UpdateProfileCommand());
         registry.register(new StaffCustomerListCommand());

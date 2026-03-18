@@ -7,10 +7,6 @@ import app.service.auth.AuthService;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-/**
- * Контекст выполнения команды: текущий пользователь, сервисы, ввод/вывод.
- * Чёткое разделение: команды только вызывают сервисы и выводят результат.
- */
 public interface CommandContext {
 
     Customer getCurrentCustomer();
