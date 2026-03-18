@@ -4,9 +4,6 @@ import app.model.Customer;
 
 import java.util.*;
 
-/**
- * Реестр команд. Выдача списка команд в зависимости от is_staff.
- */
 public class CommandRegistry {
 
     private static final Set<String> SYSTEM_COMMANDS = Set.of("help", "login", "logout", "register");
@@ -26,9 +23,18 @@ public class CommandRegistry {
         return Optional.ofNullable(commandsByName.get(normalizeKey(name)));
     }
 
-    /**
-     * Проверяет, доступна ли команда пользователю (для staff — все, для обычного — только не staff-only).
-     */
+    public CommandLookup lookup(String[] parts) {
+        String relation = parts.length > 0 ? normalizeKey(parts[0]) : "";
+        if (SYSTEM_COMMANDS.contains(relation)) {
+            return new CommandLookup(systemKey(relation), "<" + relation + ">");
+        }
+
+        String action = parts.length > 1 ? normalizeKey(parts[1]) : null;
+        String displayName = "<" + relation + " " + (action != null ? action : "?") + ">";
+        String key = action != null ? relation + " " + action : relation;
+        return new CommandLookup(key, displayName);
+    }
+
     public boolean canExecute(Command command, Customer current) {
         if (command == null) {
             return false;
