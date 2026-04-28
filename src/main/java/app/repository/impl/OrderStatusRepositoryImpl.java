@@ -13,7 +13,7 @@ public class OrderStatusRepositoryImpl implements OrderStatusRepository {
 
     @Override
     public OrderStatus save(OrderStatus orderStatus) {
-        String sql = "INSERT INTO order_statuses (status_name) VALUES (?)";
+        String sql = "INSERT INTO order_statuses (name) VALUES (?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -68,7 +68,7 @@ public class OrderStatusRepositoryImpl implements OrderStatusRepository {
 
     @Override
     public void update(OrderStatus orderStatus) {
-        String sql = "UPDATE order_statuses SET status_name = ? WHERE id = ?";
+        String sql = "UPDATE order_statuses SET name = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -94,6 +94,6 @@ public class OrderStatusRepositoryImpl implements OrderStatusRepository {
     }
 
     private OrderStatus mapResultSetToOrderStatus(ResultSet rs) throws SQLException {
-        return new OrderStatus(rs.getInt("id"), rs.getString("status_name"));
+        return new OrderStatus(rs.getInt("id"), rs.getString("name"));
     }
 }
