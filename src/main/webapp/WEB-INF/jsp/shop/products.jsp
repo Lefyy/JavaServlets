@@ -59,7 +59,7 @@
             </c:forEach>
         </div>
         <c:if test="${totalPages > 1}">
-            <nav aria-label="Page navigation">
+            <nav aria-label="Навигация по страницам">
                 <ul class="pagination justify-content-center">
                     <c:choose>
                         <c:when test="${hasPrevious}">

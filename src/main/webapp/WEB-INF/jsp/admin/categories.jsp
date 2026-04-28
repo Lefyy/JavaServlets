@@ -22,7 +22,7 @@
                 <form method="post" action="${pageContext.request.contextPath}/admin" class="d-flex gap-2">
                     <input type="hidden" name="entity" value="category"><input type="hidden" name="action" value="update"><input type="hidden" name="id" value="${category.id}">
                     <input class="form-control form-control-sm" name="name" value="${category.name}" required>
-                    <button class="btn btn-sm btn-outline-primary">OK</button>
+                    <button class="btn btn-sm btn-outline-primary">Сохранить</button>
                 </form>
             </td>
             <td>

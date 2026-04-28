@@ -12,13 +12,13 @@
         <div class="col-md-2"><input class="form-control" name="price" placeholder="Цена" required></div>
         <div class="col-md-2"><input class="form-control" name="quantity" placeholder="Кол-во" required></div>
         <div class="col-md-2"><input class="form-control" name="categoryId" placeholder="Категория ID" required></div>
-        <div class="col-md-3"><input class="form-control" name="imageUrl" placeholder="Image URL"></div>
+        <div class="col-md-3"><input class="form-control" name="imageUrl" placeholder="URL изображения"></div>
         <div class="col-md-1"><button class="btn btn-primary">Создать</button></div>
     </form>
 </div>
 <div class="table-responsive">
     <table class="table table-sm table-hover align-middle">
-        <thead><tr><th>ID</th><th>Название</th><th>Цена</th><th>Кол-во</th><th>Категория</th><th>Image URL</th><th>Обновить</th><th>Удалить</th></tr></thead>
+        <thead><tr><th>ID</th><th>Название</th><th>Цена</th><th>Кол-во</th><th>Категория</th><th>URL изображения</th><th>Обновить</th><th>Удалить</th></tr></thead>
         <tbody>
         <c:forEach items="${products}" var="product">
             <tr>
@@ -36,7 +36,7 @@
                         <div class="col-md-2"><input class="form-control form-control-sm" name="quantity" value="${product.quantity}" required></div>
                         <div class="col-md-2"><input class="form-control form-control-sm" name="categoryId" value="${product.categoryId}" required></div>
                         <div class="col-md-3"><input class="form-control form-control-sm" name="imageUrl" value="${product.imageUrl}"></div>
-                        <div class="col-md-1"><button class="btn btn-sm btn-outline-primary">OK</button></div>
+                        <div class="col-md-1"><button class="btn btn-sm btn-outline-primary">Сохранить</button></div>
                     </form>
                 </td>
                 <td>

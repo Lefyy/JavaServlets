@@ -12,20 +12,20 @@
         <div class="col-md-3"><input class="form-control" name="name" placeholder="Имя" required></div>
         <div class="col-md-3"><input class="form-control" name="email" placeholder="Email" required></div>
         <div class="col-md-3"><input class="form-control" name="password" placeholder="Пароль" required></div>
-        <div class="col-md-2 form-check ms-2 mt-2"><input class="form-check-input" type="checkbox" name="isStaff" value="true" id="isStaffCreate"><label class="form-check-label" for="isStaffCreate">Staff</label></div>
+        <div class="col-md-2 form-check ms-2 mt-2"><input class="form-check-input" type="checkbox" name="isStaff" value="true" id="isStaffCreate"><label class="form-check-label" for="isStaffCreate">Администратор</label></div>
         <div class="col-md-12"><button class="btn btn-primary">Создать</button></div>
     </form>
 </div>
 <div class="table-responsive">
     <table class="table table-sm table-hover align-middle">
-        <thead><tr><th>ID</th><th>Имя</th><th>Email</th><th>Staff</th><th>Обновить</th><th>Удалить</th></tr></thead>
+        <thead><tr><th>ID</th><th>Имя</th><th>Email</th><th>Администратор</th><th>Обновить</th><th>Удалить</th></tr></thead>
         <tbody>
         <c:forEach items="${customers}" var="customer">
             <tr>
                 <td>${customer.id}</td>
                 <td>${customer.name}</td>
                 <td>${customer.email}</td>
-                <td>${customer.staff}</td>
+                <td><c:choose><c:when test="${customer.staff}">Админ</c:when><c:otherwise>Пользователь</c:otherwise></c:choose></td>
                 <td>
                     <form method="post" action="${pageContext.request.contextPath}/admin" class="row g-1">
                         <input type="hidden" name="entity" value="customer"><input type="hidden" name="action" value="update"><input type="hidden" name="id" value="${customer.id}">
@@ -34,11 +34,11 @@
                         <div class="col-md-3"><input class="form-control form-control-sm" name="password" placeholder="Новый пароль"></div>
                         <div class="col-md-2">
                             <select class="form-select form-select-sm" name="isStaff">
-                                <option value="true" <c:if test="${customer.staff}">selected</c:if>>true</option>
-                                <option value="false" <c:if test="${!customer.staff}">selected</c:if>>false</option>
+                                <option value="true" <c:if test="${customer.staff}">selected</c:if>>Админ</option>
+                                <option value="false" <c:if test="${!customer.staff}">selected</c:if>>Пользователь</option>
                             </select>
                         </div>
-                        <div class="col-md-1"><button class="btn btn-sm btn-outline-primary">OK</button></div>
+                        <div class="col-md-1"><button class="btn btn-sm btn-outline-primary">Сохранить</button></div>
                     </form>
                 </td>
                 <td>

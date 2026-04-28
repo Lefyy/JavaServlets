@@ -11,7 +11,7 @@
     <a href="${pageContext.request.contextPath}/admin/statistics" class="admin-button" style="background-color:#20c997;"><i class="fas fa-chart-line me-2"></i> Статистика</a>
 </div>
 <div class="mt-4">
-    <p><strong>Total orders:</strong> ${stats.totalOrders}</p>
-    <p><strong>Total revenue:</strong> ${stats.totalRevenue}</p>
+    <p><strong>Всего заказов:</strong> ${stats.totalOrders}</p>
+    <p><strong>Общая выручка:</strong> ${stats.totalRevenue}</p>
 </div>
 <jsp:include page="/WEB-INF/jsp/partials/layout-bottom.jsp"/>

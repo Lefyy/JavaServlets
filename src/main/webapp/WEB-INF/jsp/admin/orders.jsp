@@ -6,7 +6,7 @@
 <a href="${pageContext.request.contextPath}/admin" class="btn btn-sm btn-outline-secondary mb-3">&larr; Назад к админ-панели</a>
 <div class="table-responsive">
     <table class="table table-sm table-hover align-middle">
-        <thead><tr><th>ID</th><th>Покупатель</th><th>Статус</th><th>Created</th><th>Обновить</th><th>Удалить</th></tr></thead>
+        <thead><tr><th>ID</th><th>Покупатель</th><th>Статус</th><th>Создан</th><th>Обновить</th><th>Удалить</th></tr></thead>
         <tbody>
         <c:forEach items="${orders}" var="order">
             <tr>
@@ -24,7 +24,7 @@
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="col-md-2"><button class="btn btn-sm btn-outline-primary">OK</button></div>
+                        <div class="col-md-2"><button class="btn btn-sm btn-outline-primary">Сохранить</button></div>
                     </form>
                 </td>
                 <td>
