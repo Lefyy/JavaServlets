@@ -20,7 +20,7 @@ public class AuthServlet extends BaseServlet {
             resp.sendRedirect(req.getContextPath() + "/auth/login");
             return;
         }
-        render(req, resp, "/auth" + ("/auth/signup".equals(servletPath) ? "/signup.jsp" : "/auth/login.jsp"));
+        render(req, resp, ("/auth/signup".equals(servletPath) ? "/signup.jsp" : "/auth/login.jsp"));
     }
 
     @Override
