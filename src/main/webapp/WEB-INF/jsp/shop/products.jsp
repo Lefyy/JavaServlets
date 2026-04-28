@@ -17,7 +17,7 @@
     <div class="col-md-3">
         <h5>Категории</h5>
         <ul class="list-group category-list">
-                <li class="list-group-item ${empty currentCategory ? 'category-active' : ''}">
+            <li class="list-group-item ${empty currentCategory ? 'category-active' : ''}">
                 <a href="${pageContext.request.contextPath}/products${empty currentSort ? '' : '?sort='.concat(currentSort)}">Все</a>
             </li>
             <c:forEach items="${categories}" var="category">
@@ -26,17 +26,18 @@
                 </li>
             </c:forEach>
         </ul>
-        <h5 class="mt-3">Сортировка</h5>
-        <div class="d-flex justify-content-end mb-3">
-            <a class="btn btn-sm btn-outline-secondary me-2"
-               href="${pageContext.request.contextPath}/products?sort=price_asc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Цена ↑</a>
-            <a class="btn btn-sm btn-outline-secondary me-2"
-               href="${pageContext.request.contextPath}/products?sort=price_desc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Цена ↓</a>
-            <a class="btn btn-sm btn-outline-secondary"
-               href="${pageContext.request.contextPath}/products?sort=popularity${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Популярные</a>
-        </div>
     </div>
     <div class="col-md-9">
+        <div class="d-flex justify-content-start mt-4 mb-3">
+            <div class="d-flex justify-content-end w-100">
+                <a class="btn btn-sm btn-outline-secondary me-2"
+                   href="${pageContext.request.contextPath}/products?sort=price_asc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Цена ↑</a>
+                <a class="btn btn-sm btn-outline-secondary me-2"
+                   href="${pageContext.request.contextPath}/products?sort=price_desc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Цена ↓</a>
+                <a class="btn btn-sm btn-outline-secondary"
+                   href="${pageContext.request.contextPath}/products?sort=popularity${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Популярные</a>
+            </div>
+        </div>
         <div class="row">
             <c:forEach items="${products}" var="product">
                 <div class="col-md-4 mb-3">
