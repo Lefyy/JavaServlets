@@ -31,6 +31,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> findCatalog(String category, String sort, int limit, int offset) {
+        return productRepository.findCatalog(category, sort, limit, offset);
+    }
+
+    @Override
+    public int countCatalog(String category) {
+        return productRepository.countCatalog(category);
+    }
+
+    @Override
     public List<Product> findByNameContaining(String name) {
         return productRepository.findByNameContaining(name);
     }

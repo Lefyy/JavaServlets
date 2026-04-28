@@ -113,6 +113,66 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
+    public List<Product> findCatalog(String category, String sort, int limit, int offset) {
+        List<Product> products = new ArrayList<>();
+        StringBuilder sql = new StringBuilder(
+                "SELECT p.* FROM products p LEFT JOIN order_items oi ON oi.product_id = p.id"
+        );
+        boolean hasCategory = category != null && !category.isBlank();
+        if (hasCategory) {
+            sql.append(" WHERE p.category_id = ?");
+        }
+        sql.append(" GROUP BY p.id");
+        sql.append(resolveOrderBy(sort));
+        sql.append(" LIMIT ? OFFSET ?");
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+
+            int paramIndex = 1;
+            if (hasCategory) {
+                pstmt.setInt(paramIndex++, Integer.parseInt(category));
+            }
+            pstmt.setInt(paramIndex++, limit);
+            pstmt.setInt(paramIndex, offset);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    products.add(mapResultSetToProduct(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка при выборке каталога", e);
+        }
+        return products;
+    }
+
+    @Override
+    public int countCatalog(String category) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM products");
+        boolean hasCategory = category != null && !category.isBlank();
+        if (hasCategory) {
+            sql.append(" WHERE category_id = ?");
+        }
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+
+            if (hasCategory) {
+                pstmt.setInt(1, Integer.parseInt(category));
+            }
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка при подсчете каталога", e);
+        }
+        return 0;
+    }
+
+    @Override
     public List<Product> findByNameContaining(String name) {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM products WHERE name ILIKE ?";
@@ -163,4 +223,18 @@ public class ProductRepositoryImpl implements ProductRepository {
         pstmt.setInt(4, product.getCategoryId());
         pstmt.setString(5, product.getImageUrl());
     }
+
+    private String resolveOrderBy(String sort) {
+        if ("price_asc".equals(sort)) {
+            return " ORDER BY p.price ASC";
+        }
+        if ("price_desc".equals(sort)) {
+            return " ORDER BY p.price DESC";
+        }
+        if ("popularity".equals(sort)) {
+            return " ORDER BY COALESCE(SUM(oi.quantity), 0) DESC";
+        }
+        return " ORDER BY p.id ASC";
+    }
+
 }

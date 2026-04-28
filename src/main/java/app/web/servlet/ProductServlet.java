@@ -29,16 +29,38 @@ public class ProductServlet extends BaseServlet {
         }
 
         String search = req.getParameter("search");
-        Integer categoryId = intParam(req, "categoryId");
         List<Product> products;
         if (search != null && !search.isBlank()) {
             products = services().productService().findByNameContaining(search);
-        } else if (categoryId != null) {
-            products = services().productService().findByCategoryId(categoryId);
+            req.setAttribute("products", products);
+            req.setAttribute("currentCategory", "");
+            req.setAttribute("currentSort", "");
+            req.setAttribute("currentPage", 1);
+            req.setAttribute("totalPages", 1);
+            req.setAttribute("hasPrevious", false);
+            req.setAttribute("hasNext", false);
         } else {
-            products = services().productService().findAll();
+            String category = resolveCategory(req);
+            String sort = optionalParam(req, "sort");
+            int page = Math.max(1, intParam(req, "page") == null ? 1 : intParam(req, "page"));
+            int pageSize = 12;
+            int totalCount = services().productService().countCatalog(category);
+            int totalPages = Math.max(1, (int) Math.ceil((double) totalCount / pageSize));
+            if (page > totalPages) {
+                page = totalPages;
+            }
+            int offset = (page - 1) * pageSize;
+            products = services().productService().findCatalog(category, sort, pageSize, offset);
+
+            req.setAttribute("products", products);
+            req.setAttribute("currentCategory", category);
+            req.setAttribute("currentSort", sort);
+            req.setAttribute("currentPage", page);
+            req.setAttribute("totalPages", totalPages);
+            req.setAttribute("hasPrevious", page > 1);
+            req.setAttribute("hasNext", page < totalPages);
+
         }
-        req.setAttribute("products", products);
         req.setAttribute("categories", services().categoryService().findAll());
         render(req, resp, "shop/products.jsp");
     }
@@ -58,4 +80,18 @@ public class ProductServlet extends BaseServlet {
         }
         resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
+
+    private String resolveCategory(HttpServletRequest req) {
+        String category = optionalParam(req, "category");
+        if (category.isBlank()) {
+            category = optionalParam(req, "categoryId");
+        }
+        return category.matches("\\d+") ? category : "";
+    }
+
+    private String optionalParam(HttpServletRequest req, String name) {
+        String value = req.getParameter(name);
+        return value == null ? "" : value.trim();
+    }
+
 }

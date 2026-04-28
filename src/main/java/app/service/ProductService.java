@@ -13,6 +13,10 @@ public interface ProductService {
 
     List<Product> findByCategoryId(Integer categoryId);
 
+    List<Product> findCatalog(String category, String sort, int limit, int offset);
+
+    int countCatalog(String category);
+
     List<Product> findByNameContaining(String name);
 
     Product create(Product product);
