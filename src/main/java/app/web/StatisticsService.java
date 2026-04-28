@@ -57,6 +57,33 @@ public class StatisticsService {
         return new AdminStats(orders.size(), revenue, topProduct, topCustomer);
     }
 
-    public record AdminStats(int totalOrders, BigDecimal totalRevenue, String topProduct, String topCustomer) {
+    public static class AdminStats {
+        private final int totalOrders;
+        private final BigDecimal totalRevenue;
+        private final String topProduct;
+        private final String topCustomer;
+
+        public AdminStats(int totalOrders, BigDecimal totalRevenue, String topProduct, String topCustomer) {
+            this.totalOrders = totalOrders;
+            this.totalRevenue = totalRevenue;
+            this.topProduct = topProduct;
+            this.topCustomer = topCustomer;
+        }
+
+        public int getTotalOrders() {
+            return totalOrders;
+        }
+
+        public BigDecimal getTotalRevenue() {
+            return totalRevenue;
+        }
+
+        public String getTopProduct() {
+            return topProduct;
+        }
+
+        public String getTopCustomer() {
+            return topCustomer;
+        }
     }
 }
