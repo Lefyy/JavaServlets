@@ -3,6 +3,7 @@ package app.web.servlet;
 import app.model.Category;
 import app.model.Customer;
 import app.model.Order;
+import app.model.OrderItem;
 import app.model.OrderStatus;
 import app.model.Product;
 import jakarta.servlet.ServletException;
@@ -46,6 +47,10 @@ public class AdminServlet extends BaseServlet {
                 List<Order> orders = services().orderService().findAll();
                 req.setAttribute("orders", orders);
                 req.setAttribute("statuses", services().orderStatusService().findAll());
+                Map<Integer, List<OrderItem>> orderItemsByOrderId = new LinkedHashMap<>();
+                orders.forEach(order -> orderItemsByOrderId.put(order.getId(), services().orderService().getItemsByOrderId(order.getId())));
+                Map<Integer, String> productNames = new LinkedHashMap<>();
+                services().productService().findAll().forEach(product -> productNames.put(product.getId(), product.getName()));
                 Map<Integer, String> customerNames = new LinkedHashMap<>();
                 services().customerService().findAll().forEach(customer -> customerNames.put(customer.getId(), customer.getName()));
                 Map<Integer, String> statusNames = new LinkedHashMap<>();
@@ -59,6 +64,8 @@ public class AdminServlet extends BaseServlet {
                 req.setAttribute("customerNames", customerNames);
                 req.setAttribute("statusNames", statusNames);
                 req.setAttribute("orderCreatedAtDates", orderCreatedAtDates);
+                req.setAttribute("orderItemsByOrderId", orderItemsByOrderId);
+                req.setAttribute("productNames", productNames);
                 render(req, resp, "admin/orders.jsp");
             }
             case "/categories" -> {
