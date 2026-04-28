@@ -1,26 +1,33 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<!doctype html>
-<html>
-<body>
-<jsp:include page="/WEB-INF/jsp/partials/header.jsp"/>
+<c:set var="pageTitle" value="Корзина"/>
+<jsp:include page="/WEB-INF/jsp/partials/layout-top.jsp"/>
 <h2>Корзина</h2>
-<c:forEach items="${cartItems}" var="item">
-    <div style="margin-bottom: 8px;">
-        <strong>${item.product.name}</strong> x
-        <form method="post" action="${pageContext.request.contextPath}/cart/update" style="display:inline;">
-            <input type="hidden" name="productId" value="${item.product.id}">
-            <input type="number" min="0" name="quantity" value="${item.qty}">
-            <button type="submit">Обновить</button>
-        </form>
-        <form method="post" action="${pageContext.request.contextPath}/cart/remove" style="display:inline;">
-            <input type="hidden" name="productId" value="${item.product.id}">
-            <button type="submit">Удалить</button>
-        </form>
-        = ${item.lineTotal}
+<div class="card">
+    <div class="card-body">
+        <c:forEach items="${cartItems}" var="item">
+            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                <div>
+                    <strong>${item.product.name}</strong><br>
+                    <small>${item.lineTotal} ₽</small>
+                </div>
+                <div class="d-flex gap-2">
+                    <form method="post" action="${pageContext.request.contextPath}/cart/update" class="d-flex gap-2">
+                        <input type="hidden" name="productId" value="${item.product.id}">
+                        <input class="form-control form-control-sm" style="width:80px;" type="number" min="0" name="quantity" value="${item.qty}">
+                        <button class="btn btn-outline-secondary btn-sm" type="submit">Обновить</button>
+                    </form>
+                    <form method="post" action="${pageContext.request.contextPath}/cart/remove">
+                        <input type="hidden" name="productId" value="${item.product.id}">
+                        <button class="btn btn-outline-danger btn-sm" type="submit">Удалить</button>
+                    </form>
+                </div>
+            </div>
+        </c:forEach>
+        <div class="mt-3 d-flex justify-content-between">
+            <strong>Итого: ${cartTotal} ₽</strong>
+            <a class="btn btn-primary" href="${pageContext.request.contextPath}/checkout">Оформить заказ</a>
+        </div>
     </div>
-</c:forEach>
-<p><strong>Итого: ${cartTotal}</strong></p>
-<a href="${pageContext.request.contextPath}/checkout">Оформить заказ</a>
-</body>
-</html>
+</div>
+<jsp:include page="/WEB-INF/jsp/partials/layout-bottom.jsp"/>

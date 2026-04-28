@@ -1,18 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<!doctype html>
-<html>
-<body>
-<jsp:include page="/WEB-INF/jsp/partials/header.jsp"/>
-<h2>Админ-панель</h2>
-<nav>
-    <a href="${pageContext.request.contextPath}/admin/customers">Customers</a> |
-    <a href="${pageContext.request.contextPath}/admin/products">Products</a> |
-    <a href="${pageContext.request.contextPath}/admin/orders">Orders</a> |
-    <a href="${pageContext.request.contextPath}/admin/categories">Categories</a> |
-    <a href="${pageContext.request.contextPath}/admin/order-statuses">Statuses</a> |
-    <a href="${pageContext.request.contextPath}/admin/statistics">Statistics</a>
-</nav>
-<p>Total orders: ${stats.totalOrders}</p>
-<p>Total revenue: ${stats.totalRevenue}</p>
-</body>
-</html>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<c:set var="pageTitle" value="Админ-панель"/>
+<jsp:include page="/WEB-INF/jsp/partials/layout-top.jsp"/>
+<h3>Админ-панель</h3>
+<p>Выберите раздел для управления:</p>
+<div class="admin-button-grid">
+    <a href="${pageContext.request.contextPath}/admin/customers" class="admin-button" style="background-color:#198754;"><i class="fas fa-users me-2"></i> Покупатели</a>
+    <a href="${pageContext.request.contextPath}/admin/orders" class="admin-button" style="background-color:#0d6efd;"><i class="fas fa-shopping-cart me-2"></i> Заказы</a>
+    <a href="${pageContext.request.contextPath}/admin/products" class="admin-button" style="background-color:#dc3545;"><i class="fas fa-box-open me-2"></i> Продукты</a>
+    <a href="${pageContext.request.contextPath}/admin/statistics" class="admin-button" style="background-color:#20c997;"><i class="fas fa-chart-line me-2"></i> Статистика</a>
+</div>
+<div class="mt-4">
+    <p><strong>Total orders:</strong> ${stats.totalOrders}</p>
+    <p><strong>Total revenue:</strong> ${stats.totalRevenue}</p>
+</div>
+<jsp:include page="/WEB-INF/jsp/partials/layout-bottom.jsp"/>

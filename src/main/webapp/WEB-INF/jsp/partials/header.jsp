@@ -1,25 +1,30 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<header style="margin-bottom: 20px;">
-    <h1><a href="${pageContext.request.contextPath}/products">JavaShop</a></h1>
-    <nav style="display: flex; gap: 12px;">
-        <a href="${pageContext.request.contextPath}/products">Каталог</a>
-        <a href="${pageContext.request.contextPath}/cart">Корзина</a>
-        <a href="${pageContext.request.contextPath}/profile">Профиль</a>
-        <c:if test="${currentCustomer != null && currentCustomer.staff}">
-            <a href="${pageContext.request.contextPath}/admin">Админка</a>
-        </c:if>
-        <c:choose>
-            <c:when test="${currentCustomer == null}">
-                <a href="${pageContext.request.contextPath}/auth/login">Вход</a>
-                <a href="${pageContext.request.contextPath}/auth/signup">Регистрация</a>
-            </c:when>
-            <c:otherwise>
-                <a href="${pageContext.request.contextPath}/auth/logout">Выход</a>
-            </c:otherwise>
-        </c:choose>
-    </nav>
-    <c:if test="${flashMessage != null}">
-        <p style="color: #0a7;">${flashMessage}</p>
-    </c:if>
-</header>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/products">JavaShop</a>
+        <div class="d-flex align-items-center gap-2">
+            <a href="${pageContext.request.contextPath}/cart" class="btn btn-outline-primary">Корзина</a>
+            <c:if test="${currentCustomer != null}">
+                <a href="${pageContext.request.contextPath}/profile" class="btn btn-outline-secondary">Профиль</a>
+            </c:if>
+            <c:if test="${currentCustomer != null && currentCustomer.staff}">
+                <a href="${pageContext.request.contextPath}/admin" class="btn btn-outline-dark">Панель администратора</a>
+            </c:if>
+            <c:choose>
+                <c:when test="${currentCustomer == null}">
+                    <a href="${pageContext.request.contextPath}/auth/login" class="btn btn-link">Войти</a>
+                    <a href="${pageContext.request.contextPath}/auth/signup" class="btn btn-primary">Регистрация</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/auth/logout" class="btn btn-link">Выйти</a>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
+</nav>
+<c:if test="${flashMessage != null}">
+    <div class="container mt-3">
+        <div class="alert alert-info mb-0">${flashMessage}</div>
+    </div>
+</c:if>

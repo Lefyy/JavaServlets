@@ -11,3 +11,11 @@
    - `/products` — каталог
    - `/auth/login` — вход
    - `/admin` — админ-панель (для staff-пользователей)
+
+### Настройка БД
+
+Можно передать подключение через переменные окружения (приоритет выше `db.properties`):
+
+- `JAVASHOP_DB_URL` (например, `jdbc:postgresql://localhost:5432/JavaShop`)
+- `JAVASHOP_DB_USER`
+- `JAVASHOP_DB_PASSWORD`
