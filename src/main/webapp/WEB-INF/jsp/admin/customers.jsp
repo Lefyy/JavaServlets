@@ -27,25 +27,36 @@
                 <td>${customer.email}</td>
                 <td><c:choose><c:when test="${customer.staff}">Админ</c:when><c:otherwise>Пользователь</c:otherwise></c:choose></td>
                 <td>
-                    <form method="post" action="${pageContext.request.contextPath}/admin" class="row g-1">
-                        <input type="hidden" name="entity" value="customer"><input type="hidden" name="action" value="update"><input type="hidden" name="id" value="${customer.id}">
-                        <div class="col-md-3"><input class="form-control form-control-sm" name="name" value="${customer.name}" required></div>
-                        <div class="col-md-3"><input class="form-control form-control-sm" name="email" value="${customer.email}" required></div>
-                        <div class="col-md-3"><input class="form-control form-control-sm" name="password" placeholder="Новый пароль"></div>
-                        <div class="col-md-2">
-                            <select class="form-select form-select-sm" name="isStaff">
-                                <option value="true" <c:if test="${customer.staff}">selected</c:if>>Админ</option>
-                                <option value="false" <c:if test="${!customer.staff}">selected</c:if>>Пользователь</option>
-                            </select>
-                        </div>
-                        <div class="col-md-1"><button class="btn btn-sm btn-outline-primary">Сохранить</button></div>
-                    </form>
+                    <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#edit-customer-${customer.id}" aria-expanded="false" aria-controls="edit-customer-${customer.id}">
+                        Редактировать
+                    </button>
                 </td>
                 <td>
                     <form method="post" action="${pageContext.request.contextPath}/admin">
                         <input type="hidden" name="entity" value="customer"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="${customer.id}">
                         <button class="btn btn-sm btn-outline-danger">Удалить</button>
                     </form>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6" class="py-0 border-0">
+                    <div class="collapse mt-2" id="edit-customer-${customer.id}">
+                        <div class="card card-body">
+                            <form method="post" action="${pageContext.request.contextPath}/admin" class="row g-2">
+                                <input type="hidden" name="entity" value="customer"><input type="hidden" name="action" value="update"><input type="hidden" name="id" value="${customer.id}">
+                                <div class="col-md-3"><input class="form-control form-control-sm" name="name" value="${customer.name}" required></div>
+                                <div class="col-md-3"><input class="form-control form-control-sm" name="email" value="${customer.email}" required></div>
+                                <div class="col-md-3"><input class="form-control form-control-sm" name="password" placeholder="Новый пароль"></div>
+                                <div class="col-md-2">
+                                    <select class="form-select form-select-sm" name="isStaff">
+                                        <option value="true" <c:if test="${customer.staff}">selected</c:if>>Админ</option>
+                                        <option value="false" <c:if test="${!customer.staff}">selected</c:if>>Пользователь</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1"><button class="btn btn-sm btn-outline-primary">Сохранить</button></div>
+                            </form>
+                        </div>
+                    </div>
                 </td>
             </tr>
         </c:forEach>

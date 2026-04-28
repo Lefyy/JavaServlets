@@ -29,21 +29,32 @@
                 <td>${categoryNames[product.categoryId]} <small class="text-muted">(ID: ${product.categoryId})</small></td>
                 <td class="text-truncate" style="max-width:180px;">${product.imageUrl}</td>
                 <td>
-                    <form method="post" action="${pageContext.request.contextPath}/admin" class="row g-1">
-                        <input type="hidden" name="entity" value="product"><input type="hidden" name="action" value="update"><input type="hidden" name="id" value="${product.id}">
-                        <div class="col-md-2"><input class="form-control form-control-sm" name="name" value="${product.name}" required></div>
-                        <div class="col-md-2"><input class="form-control form-control-sm" name="price" value="${product.price}" required></div>
-                        <div class="col-md-2"><input class="form-control form-control-sm" name="quantity" value="${product.quantity}" required></div>
-                        <div class="col-md-2"><input class="form-control form-control-sm" name="categoryId" value="${product.categoryId}" required></div>
-                        <div class="col-md-3"><input class="form-control form-control-sm" name="imageUrl" value="${product.imageUrl}"></div>
-                        <div class="col-md-1"><button class="btn btn-sm btn-outline-primary">Сохранить</button></div>
-                    </form>
+                    <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#edit-product-${product.id}" aria-expanded="false" aria-controls="edit-product-${product.id}">
+                        Редактировать
+                    </button>
                 </td>
                 <td>
                     <form method="post" action="${pageContext.request.contextPath}/admin">
                         <input type="hidden" name="entity" value="product"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="${product.id}">
                         <button class="btn btn-sm btn-outline-danger">Удалить</button>
                     </form>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8" class="py-0 border-0">
+                    <div class="collapse mt-2" id="edit-product-${product.id}">
+                        <div class="card card-body">
+                            <form method="post" action="${pageContext.request.contextPath}/admin" class="row g-2">
+                                <input type="hidden" name="entity" value="product"><input type="hidden" name="action" value="update"><input type="hidden" name="id" value="${product.id}">
+                                <div class="col-md-2"><input class="form-control form-control-sm" name="name" value="${product.name}" required></div>
+                                <div class="col-md-2"><input class="form-control form-control-sm" name="price" value="${product.price}" required></div>
+                                <div class="col-md-2"><input class="form-control form-control-sm" name="quantity" value="${product.quantity}" required></div>
+                                <div class="col-md-2"><input class="form-control form-control-sm" name="categoryId" value="${product.categoryId}" required></div>
+                                <div class="col-md-3"><input class="form-control form-control-sm" name="imageUrl" value="${product.imageUrl}"></div>
+                                <div class="col-md-1"><button class="btn btn-sm btn-outline-primary">Сохранить</button></div>
+                            </form>
+                        </div>
+                    </div>
                 </td>
             </tr>
         </c:forEach>

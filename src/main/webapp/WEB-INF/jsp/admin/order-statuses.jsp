@@ -19,17 +19,28 @@
             <td>${status.id}</td>
             <td>${status.name}</td>
             <td>
-                <form method="post" action="${pageContext.request.contextPath}/admin" class="d-flex gap-2">
-                    <input type="hidden" name="entity" value="status"><input type="hidden" name="action" value="update"><input type="hidden" name="id" value="${status.id}">
-                    <input class="form-control form-control-sm" name="name" value="${status.name}" required>
-                    <button class="btn btn-sm btn-outline-primary">Сохранить</button>
-                </form>
+                <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#edit-status-${status.id}" aria-expanded="false" aria-controls="edit-status-${status.id}">
+                    Редактировать
+                </button>
             </td>
             <td>
                 <form method="post" action="${pageContext.request.contextPath}/admin">
                     <input type="hidden" name="entity" value="status"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="${status.id}">
                     <button class="btn btn-sm btn-outline-danger">Удалить</button>
                 </form>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="py-0 border-0">
+                <div class="collapse mt-2" id="edit-status-${status.id}">
+                    <div class="card card-body">
+                        <form method="post" action="${pageContext.request.contextPath}/admin" class="d-flex gap-2">
+                            <input type="hidden" name="entity" value="status"><input type="hidden" name="action" value="update"><input type="hidden" name="id" value="${status.id}">
+                            <input class="form-control form-control-sm" name="name" value="${status.name}" required>
+                            <button class="btn btn-sm btn-outline-primary">Сохранить</button>
+                        </form>
+                    </div>
+                </div>
             </td>
         </tr>
     </c:forEach>
