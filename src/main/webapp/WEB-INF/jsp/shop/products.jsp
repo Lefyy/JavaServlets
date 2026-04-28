@@ -2,15 +2,26 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <c:set var="pageTitle" value="Каталог"/>
 <jsp:include page="/WEB-INF/jsp/partials/layout-top.jsp"/>
+<style>
+    .category-list .category-active {
+        background-color: #e9ecef;
+    }
+    .category-list .category-active a {
+        color: #212529;
+    }
+    .category-list .category-active a:hover {
+        color: #212529;
+    }
+</style>
 <div class="row">
     <div class="col-md-3">
         <h5>Категории</h5>
-        <ul class="list-group">
-            <li class="list-group-item ${empty currentCategory ? 'active' : ''}">
+        <ul class="list-group category-list">
+                <li class="list-group-item ${empty currentCategory ? 'category-active' : ''}">
                 <a href="${pageContext.request.contextPath}/products${empty currentSort ? '' : '?sort='.concat(currentSort)}">Все</a>
             </li>
             <c:forEach items="${categories}" var="category">
-                <li class="list-group-item ${currentCategory == category.id.toString() ? 'active' : ''}">
+                <li class="list-group-item ${currentCategory == category.id.toString() ? 'category-active' : ''}">
                     <a href="${pageContext.request.contextPath}/products?category=${category.id}${empty currentSort ? '' : '&sort='.concat(currentSort)}">${category.name}</a>
                 </li>
             </c:forEach>
