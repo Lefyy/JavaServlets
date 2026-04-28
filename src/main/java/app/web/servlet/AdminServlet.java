@@ -145,11 +145,20 @@ public class AdminServlet extends BaseServlet {
     private void orderAction(HttpServletRequest req, String action) {
         Integer id = intParam(req, "id");
         if ("update".equals(action)) {
+            if (id == null) {
+                req.getSession().setAttribute("flashMessage", "Не удалось обновить заказ: отсутствует id.");
+                return;
+            }
+            Order existingOrder = services().orderService().findById(id).orElse(null);
+            if (existingOrder == null) {
+                req.getSession().setAttribute("flashMessage", "Не удалось обновить заказ: заказ не найден.");
+                return;
+            }
             Order order = new Order();
-            order.setId(id);
-            order.setCustomerId(Integer.parseInt(req.getParameter("customerId")));
+            order.setId(existingOrder.getId());
+            order.setCustomerId(existingOrder.getCustomerId());
             order.setStatusId(Integer.parseInt(req.getParameter("statusId")));
-            order.setCreatedAt(java.time.LocalDateTime.now());
+            order.setCreatedAt(existingOrder.getCreatedAt());
             services().orderService().update(order);
             return;
         }

@@ -29,7 +29,7 @@
     </div>
     <div class="col-md-9">
         <div class="d-flex justify-content-start mt-4 mb-3">
-            <div class="d-flex justify-content-end w-100">
+            <div class="d-flex justify-content-start w-100">
                 <a class="btn btn-sm btn-outline-secondary me-2"
                    href="${pageContext.request.contextPath}/products?sort=price_asc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Цена ↑</a>
                 <a class="btn btn-sm btn-outline-secondary me-2"

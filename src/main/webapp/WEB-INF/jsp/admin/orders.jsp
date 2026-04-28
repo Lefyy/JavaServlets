@@ -17,7 +17,6 @@
                 <td>
                     <form method="post" action="${pageContext.request.contextPath}/admin" class="row g-1">
                         <input type="hidden" name="entity" value="order"><input type="hidden" name="action" value="update"><input type="hidden" name="id" value="${order.id}">
-                        <div class="col-md-3"><input class="form-control form-control-sm" name="customerId" value="${order.customerId}" required></div>
                         <div class="col-md-4">
                             <select class="form-select form-select-sm" name="statusId">
                                 <c:forEach items="${statuses}" var="status">
