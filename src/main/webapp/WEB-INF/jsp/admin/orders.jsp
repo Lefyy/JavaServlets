@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <c:set var="pageTitle" value="Заказы"/>
 <jsp:include page="/WEB-INF/jsp/partials/layout-top.jsp"/>
 <h3><i class="fas fa-shopping-cart"></i> Заказы</h3>
@@ -13,7 +14,7 @@
                 <td>${order.id}</td>
                 <td>${customerNames[order.customerId]} <small class="text-muted">(ID: ${order.customerId})</small></td>
                 <td>${statusNames[order.statusId]} <small class="text-muted">(ID: ${order.statusId})</small></td>
-                <td>${order.createdAt}</td>
+                <td><fmt:formatDate value="${orderCreatedAtDates[order.id]}" pattern="yyyy-MM-dd HH:mm"/></td>
                 <td>
                     <form method="post" action="${pageContext.request.contextPath}/admin" class="row g-1">
                         <input type="hidden" name="entity" value="order"><input type="hidden" name="action" value="update"><input type="hidden" name="id" value="${order.id}">

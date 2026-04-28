@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <c:set var="pageTitle" value="Профиль"/>
 <jsp:include page="/WEB-INF/jsp/partials/layout-top.jsp"/>
 <div class="row">
@@ -38,7 +39,7 @@
                     <tr>
                         <td>#${order.id}</td>
                         <td>${statusNames[order.statusId]} <small class="text-muted">(ID: ${order.statusId})</small></td>
-                        <td>${order.createdAt}</td>
+                        <td><fmt:formatDate value="${orderCreatedAtDates[order.id]}" pattern="yyyy-MM-dd HH:mm"/></td>
                         <td><a class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/orders/success?id=${order.id}">Открыть</a></td>
                     </tr>
                 </c:forEach>

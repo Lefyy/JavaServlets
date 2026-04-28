@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,9 +26,16 @@ public class ProfileServlet extends BaseServlet {
         }
         Map<Integer, String> statusNames = new LinkedHashMap<>();
         services().orderStatusService().findAll().forEach(status -> statusNames.put(status.getId(), status.getName()));
+        Map<Integer, Date> orderCreatedAtDates = new LinkedHashMap<>();
+        orders.forEach(order -> {
+            if (order.getCreatedAt() != null) {
+                orderCreatedAtDates.put(order.getId(), Timestamp.valueOf(order.getCreatedAt()));
+            }
+        });
         req.setAttribute("orders", orders);
         req.setAttribute("orderItems", orderItems);
         req.setAttribute("statusNames", statusNames);
+        req.setAttribute("orderCreatedAtDates", orderCreatedAtDates);
         render(req, resp, "shop/profile.jsp");
     }
 

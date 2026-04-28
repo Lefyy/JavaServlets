@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -40,14 +43,22 @@ public class AdminServlet extends BaseServlet {
                 render(req, resp, "admin/products.jsp");
             }
             case "/orders" -> {
-                req.setAttribute("orders", services().orderService().findAll());
+                List<Order> orders = services().orderService().findAll();
+                req.setAttribute("orders", orders);
                 req.setAttribute("statuses", services().orderStatusService().findAll());
                 Map<Integer, String> customerNames = new LinkedHashMap<>();
                 services().customerService().findAll().forEach(customer -> customerNames.put(customer.getId(), customer.getName()));
                 Map<Integer, String> statusNames = new LinkedHashMap<>();
                 services().orderStatusService().findAll().forEach(status -> statusNames.put(status.getId(), status.getName()));
+                Map<Integer, Date> orderCreatedAtDates = new LinkedHashMap<>();
+                orders.forEach(order -> {
+                    if (order.getCreatedAt() != null) {
+                        orderCreatedAtDates.put(order.getId(), Timestamp.valueOf(order.getCreatedAt()));
+                    }
+                });
                 req.setAttribute("customerNames", customerNames);
                 req.setAttribute("statusNames", statusNames);
+                req.setAttribute("orderCreatedAtDates", orderCreatedAtDates);
                 render(req, resp, "admin/orders.jsp");
             }
             case "/categories" -> {

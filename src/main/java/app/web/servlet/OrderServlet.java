@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -38,6 +39,7 @@ public class OrderServlet extends BaseServlet {
         Map<Integer, String> productNames = new LinkedHashMap<>();
         services().productService().findAll().forEach(product -> productNames.put(product.getId(), product.getName()));
         req.setAttribute("order", order);
+        req.setAttribute("orderCreatedAtDate", order.getCreatedAt() != null ? Timestamp.valueOf(order.getCreatedAt()) : null);
         req.setAttribute("items", services().orderService().getItemsByOrderId(orderId));
         req.setAttribute("statusNames", statusNames);
         req.setAttribute("productNames", productNames);
