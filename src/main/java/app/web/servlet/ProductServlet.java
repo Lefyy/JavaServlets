@@ -24,6 +24,10 @@ public class ProductServlet extends BaseServlet {
                 return;
             }
             req.setAttribute("product", product.get());
+            String categoryName = services().categoryService().findById(product.get().getCategoryId())
+                    .map(category -> category.getName())
+                    .orElse("Неизвестная категория");
+            req.setAttribute("categoryName", categoryName);
             render(req, resp, "shop/product-detail.jsp");
             return;
         }

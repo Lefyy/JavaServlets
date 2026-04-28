@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 
 @WebServlet(urlPatterns = {"/admin", "/admin/*"})
 public class AdminServlet extends BaseServlet {
@@ -31,11 +34,20 @@ public class AdminServlet extends BaseServlet {
             case "/products" -> {
                 req.setAttribute("products", services().productService().findAll());
                 req.setAttribute("categories", services().categoryService().findAll());
+                Map<Integer, String> categoryNames = new LinkedHashMap<>();
+                services().categoryService().findAll().forEach(category -> categoryNames.put(category.getId(), category.getName()));
+                req.setAttribute("categoryNames", categoryNames);
                 render(req, resp, "admin/products.jsp");
             }
             case "/orders" -> {
                 req.setAttribute("orders", services().orderService().findAll());
                 req.setAttribute("statuses", services().orderStatusService().findAll());
+                Map<Integer, String> customerNames = new LinkedHashMap<>();
+                services().customerService().findAll().forEach(customer -> customerNames.put(customer.getId(), customer.getName()));
+                Map<Integer, String> statusNames = new LinkedHashMap<>();
+                services().orderStatusService().findAll().forEach(status -> statusNames.put(status.getId(), status.getName()));
+                req.setAttribute("customerNames", customerNames);
+                req.setAttribute("statusNames", statusNames);
                 render(req, resp, "admin/orders.jsp");
             }
             case "/categories" -> {

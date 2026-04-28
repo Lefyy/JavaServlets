@@ -5,13 +5,13 @@
 <div class="row">
     <div class="col-md-8">
         <h3>Спасибо, заказ #${order.id} принят</h3>
-        <p>Статус: ${order.statusId}</p>
+        <p>Статус: ${statusNames[order.statusId]} <small class="text-muted">(ID: ${order.statusId})</small></p>
         <p>Дата: ${order.createdAt}</p>
         <h5 class="mt-4">Состав заказа</h5>
         <table class="table table-sm">
             <thead>
             <tr>
-                <th>Товар ID</th>
+                <th>Товар</th>
                 <th>Цена</th>
                 <th>Кол-во</th>
                 <th>Сумма</th>
@@ -20,7 +20,7 @@
             <tbody>
             <c:forEach items="${items}" var="item">
                 <tr>
-                    <td>${item.productId}</td>
+                    <td>${productNames[item.productId]} <small class="text-muted">(ID: ${item.productId})</small></td>
                     <td>${item.priceAtPurchase}</td>
                     <td>${item.quantity}</td>
                     <td>${item.priceAtPurchase * item.quantity}</td>

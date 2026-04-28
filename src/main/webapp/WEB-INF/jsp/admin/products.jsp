@@ -26,7 +26,7 @@
                 <td>${product.name}</td>
                 <td>${product.price}</td>
                 <td>${product.quantity}</td>
-                <td>${product.categoryId}</td>
+                <td>${categoryNames[product.categoryId]} <small class="text-muted">(ID: ${product.categoryId})</small></td>
                 <td class="text-truncate" style="max-width:180px;">${product.imageUrl}</td>
                 <td>
                     <form method="post" action="${pageContext.request.contextPath}/admin" class="row g-1">

@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @WebServlet(urlPatterns = "/orders/success")
@@ -31,8 +33,14 @@ public class OrderServlet extends BaseServlet {
             resp.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
+        Map<Integer, String> statusNames = new LinkedHashMap<>();
+        services().orderStatusService().findAll().forEach(status -> statusNames.put(status.getId(), status.getName()));
+        Map<Integer, String> productNames = new LinkedHashMap<>();
+        services().productService().findAll().forEach(product -> productNames.put(product.getId(), product.getName()));
         req.setAttribute("order", order);
         req.setAttribute("items", services().orderService().getItemsByOrderId(orderId));
+        req.setAttribute("statusNames", statusNames);
+        req.setAttribute("productNames", productNames);
         render(req, resp, "shop/order-success.jsp");
     }
 }

@@ -6,13 +6,13 @@
 <a href="${pageContext.request.contextPath}/admin" class="btn btn-sm btn-outline-secondary mb-3">&larr; Назад к админ-панели</a>
 <div class="table-responsive">
     <table class="table table-sm table-hover align-middle">
-        <thead><tr><th>ID</th><th>Customer ID</th><th>Status</th><th>Created</th><th>Обновить</th><th>Удалить</th></tr></thead>
+        <thead><tr><th>ID</th><th>Покупатель</th><th>Статус</th><th>Created</th><th>Обновить</th><th>Удалить</th></tr></thead>
         <tbody>
         <c:forEach items="${orders}" var="order">
             <tr>
                 <td>${order.id}</td>
-                <td>${order.customerId}</td>
-                <td>${order.statusId}</td>
+                <td>${customerNames[order.customerId]} <small class="text-muted">(ID: ${order.customerId})</small></td>
+                <td>${statusNames[order.statusId]} <small class="text-muted">(ID: ${order.statusId})</small></td>
                 <td>${order.createdAt}</td>
                 <td>
                     <form method="post" action="${pageContext.request.contextPath}/admin" class="row g-1">

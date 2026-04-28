@@ -37,7 +37,7 @@
                 <c:forEach items="${orders}" var="order">
                     <tr>
                         <td>#${order.id}</td>
-                        <td>${order.statusId}</td>
+                        <td>${statusNames[order.statusId]} <small class="text-muted">(ID: ${order.statusId})</small></td>
                         <td>${order.createdAt}</td>
                         <td><a class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/orders/success?id=${order.id}">Открыть</a></td>
                     </tr>

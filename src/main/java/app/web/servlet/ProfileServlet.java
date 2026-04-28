@@ -22,8 +22,11 @@ public class ProfileServlet extends BaseServlet {
         for (Order order : orders) {
             orderItems.put(order.getId(), services().orderService().getItemsByOrderId(order.getId()));
         }
+        Map<Integer, String> statusNames = new LinkedHashMap<>();
+        services().orderStatusService().findAll().forEach(status -> statusNames.put(status.getId(), status.getName()));
         req.setAttribute("orders", orders);
         req.setAttribute("orderItems", orderItems);
+        req.setAttribute("statusNames", statusNames);
         render(req, resp, "shop/profile.jsp");
     }
 
