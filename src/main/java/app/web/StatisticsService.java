@@ -1,5 +1,14 @@
 package app.web;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import app.model.Order;
 import app.model.OrderItem;
 import app.model.Product;
@@ -7,12 +16,6 @@ import app.repository.CustomerRepository;
 import app.repository.OrderItemRepository;
 import app.repository.ProductRepository;
 import app.service.OrderService;
-
-import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class StatisticsService {
     private final OrderService orderService;
@@ -30,13 +33,23 @@ public class StatisticsService {
         this.customerRepository = customerRepository;
     }
 
-    public AdminStats buildStats() {
+    public AdminStats buildStats(LocalDate fromDate, LocalDate toDate) {
         List<Order> orders = orderService.findAll();
         Map<Integer, Integer> productQty = new HashMap<>();
         Map<Integer, Integer> customerOrders = new HashMap<>();
         BigDecimal revenue = BigDecimal.ZERO;
 
+        LocalDateTime from = fromDate != null ? fromDate.atStartOfDay() : null;
+        LocalDateTime to = toDate != null ? toDate.plusDays(1).atStartOfDay() : null;
+
+        int filteredOrdersCount = 0;
+
         for (Order order : orders) {
+            if (!isWithinRange(order.getCreatedAt(), from, to)) {
+                continue;
+            }
+
+            filteredOrdersCount++;
             customerOrders.merge(order.getCustomerId(), 1, Integer::sum);
             for (OrderItem item : orderItemRepository.findByOrderId(order.getId())) {
                 productQty.merge(item.getProductId(), item.getQuantity(), Integer::sum);
@@ -44,30 +57,55 @@ public class StatisticsService {
             }
         }
 
-        String topProduct = productQty.entrySet().stream()
-                .max(Comparator.comparingInt(Map.Entry::getValue))
-                .flatMap(e -> productRepository.findById(e.getKey()).map(Product::getName))
-                .orElse("N/A");
+        List<RankItem> topProducts = productQty.entrySet().stream()
+                .sorted(Map.Entry.<Integer, Integer>comparingByValue(Comparator.reverseOrder()))
+                .limit(5)
+                .map(entry -> new RankItem(
+                        productRepository.findById(entry.getKey()).map(Product::getName).orElse("Товар #" + entry.getKey()),
+                        entry.getValue()
+                ))
+                .toList();
 
-        String topCustomer = customerOrders.entrySet().stream()
-                .max(Comparator.comparingInt(Map.Entry::getValue))
-                .flatMap(e -> customerRepository.findById(e.getKey()).map(c -> c.getName() + " (" + c.getEmail() + ")"))
-                .orElse("N/A");
+        List<RankItem> topCustomers = customerOrders.entrySet().stream()
+                .sorted(Map.Entry.<Integer, Integer>comparingByValue(Comparator.reverseOrder()))
+                .limit(5)
+                .map(entry -> new RankItem(
+                        customerRepository.findById(entry.getKey())
+                                .map(c -> c.getName() + " (" + c.getEmail() + ")")
+                                .orElse("Покупатель #" + entry.getKey()),
+                        entry.getValue()
+                ))
+                .toList();
 
-        return new AdminStats(orders.size(), revenue, topProduct, topCustomer);
+        return new AdminStats(filteredOrdersCount, revenue, topProducts, topCustomers);
+    }
+
+    public AdminStats buildStats() {
+        return buildStats(null, null);
+    }
+
+
+    private boolean isWithinRange(LocalDateTime createdAt, LocalDateTime from, LocalDateTime to) {
+        if (createdAt == null) {
+            return from == null && to == null;
+        }
+        if (from != null && createdAt.isBefore(from)) {
+            return false;
+        }
+        return to == null || createdAt.isBefore(to);
     }
 
     public static class AdminStats {
         private final int totalOrders;
         private final BigDecimal totalRevenue;
-        private final String topProduct;
-        private final String topCustomer;
+        private final List<RankItem> topProducts;
+        private final List<RankItem> topCustomers;
 
-        public AdminStats(int totalOrders, BigDecimal totalRevenue, String topProduct, String topCustomer) {
+        public AdminStats(int totalOrders, BigDecimal totalRevenue, List<RankItem> topProducts, List<RankItem> topCustomers) {
             this.totalOrders = totalOrders;
             this.totalRevenue = totalRevenue;
-            this.topProduct = topProduct;
-            this.topCustomer = topCustomer;
+            this.topProducts = topProducts != null ? topProducts : new ArrayList<>();
+            this.topCustomers = topCustomers != null ? topCustomers : new ArrayList<>();
         }
 
         public int getTotalOrders() {
@@ -78,12 +116,31 @@ public class StatisticsService {
             return totalRevenue;
         }
 
-        public String getTopProduct() {
-            return topProduct;
+        public List<RankItem> getTopProducts() {
+            return topProducts;
         }
 
-        public String getTopCustomer() {
-            return topCustomer;
+        public List<RankItem> getTopCustomers() {
+            return topCustomers;
+        }
+    }
+
+    public static class RankItem {
+        private final String label;
+        private final int value;
+
+        public RankItem(String label, int value) {
+            this.label = label;
+            this.value = value;
+        }
+
+        public String getLabel() {
+            return label;
+
+        }
+
+        public int getValue() {
+            return value;
         }
     }
 }
