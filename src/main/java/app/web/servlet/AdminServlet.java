@@ -1,5 +1,14 @@
 package app.web.servlet;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import app.model.Category;
 import app.model.Customer;
 import app.model.Order;
@@ -10,14 +19,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 
 @WebServlet(urlPatterns = {"/admin", "/admin/*"})
@@ -77,7 +78,10 @@ public class AdminServlet extends BaseServlet {
                 render(req, resp, "admin/order-statuses.jsp");
             }
             case "/statistics" -> {
-                req.setAttribute("stats", services().statisticsService().buildStats());
+                LocalDate[] period = resolveStatisticsPeriod(req);
+                req.setAttribute("fromDate", period[0] != null ? period[0].toString() : "");
+                req.setAttribute("toDate", period[1] != null ? period[1].toString() : "");
+                req.setAttribute("stats", services().statisticsService().buildStats(period[0], period[1]));
                 render(req, resp, "admin/statistics.jsp");
             }
             default -> resp.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -114,6 +118,43 @@ public class AdminServlet extends BaseServlet {
             return;
         }
         resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    private LocalDate[] resolveStatisticsPeriod(HttpServletRequest req) {
+        String preset = req.getParameter("period");
+        if (preset != null && !preset.isBlank()) {
+            LocalDate today = LocalDate.now();
+            return switch (preset) {
+                case "day" -> new LocalDate[]{today, today};
+                case "week" -> new LocalDate[]{today.minusDays(6), today};
+                case "month" -> new LocalDate[]{today.minusMonths(1).plusDays(1), today};
+                case "year" -> new LocalDate[]{today.minusYears(1).plusDays(1), today};
+                default -> parseCustomPeriod(req.getParameter("from"), req.getParameter("to"));
+            };
+        }
+        return parseCustomPeriod(req.getParameter("from"), req.getParameter("to"));
+    }
+
+    private LocalDate[] parseCustomPeriod(String from, String to) {
+        LocalDate fromDate = parseDateSafely(from);
+        LocalDate toDate = parseDateSafely(to);
+        if (fromDate != null && toDate != null && fromDate.isAfter(toDate)) {
+            LocalDate temp = fromDate;
+            fromDate = toDate;
+            toDate = temp;
+        }
+        return new LocalDate[]{fromDate, toDate};
+    }
+
+    private LocalDate parseDateSafely(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        try {
+            return LocalDate.parse(value);
+        } catch (Exception ignored) {
+            return null;
+        }
     }
 
     private void customerAction(HttpServletRequest req, String action) {
