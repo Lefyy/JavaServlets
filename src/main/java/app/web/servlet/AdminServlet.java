@@ -153,9 +153,9 @@ public class AdminServlet extends BaseServlet {
 
     private void customerAction(HttpServletRequest req, String action) {
         if ("create".equals(action)) {
-            String name = requireValue(req.getParameter("name"), "Name is required");
-            String email = requireValue(req.getParameter("email"), "Email is required");
-            String password = requireValue(req.getParameter("password"), "Password is required");
+            String name = requireValue(req.getParameter("name"), "Имя обязательно");
+            String email = requireValue(req.getParameter("email"), "Email обязателен");
+            String password = requireValue(req.getParameter("password"), "Пароль обязателен");
             services().customerService().save(new Customer(
                     null,
                     name,
@@ -165,15 +165,15 @@ public class AdminServlet extends BaseServlet {
             ));
             return;
         }
-        Integer id = requirePositiveInt(req.getParameter("id"), "Invalid customer id");
+        Integer id = requirePositiveInt(req.getParameter("id"), "Некорректный ID покупателя");
         if ("update".equals(action)) {
-            String name = requireValue(req.getParameter("name"), "Name is required");
-            String email = requireValue(req.getParameter("email"), "Email is required");
+            String name = requireValue(req.getParameter("name"), "Имя обязательно");
+            String email = requireValue(req.getParameter("email"), "Email обязателен");
             String password = trimToNull(req.getParameter("password"));
             if (password == null) {
                 Customer existing = services().customerService().findById(id).orElse(null);
                 if (existing == null) {
-                    throw new IllegalArgumentException("Customer not found");
+                    throw new IllegalArgumentException("Покупатель не найден");
                 }
                 password = existing.getPassword();
             }
@@ -197,7 +197,7 @@ public class AdminServlet extends BaseServlet {
             services().productService().create(product);
             return;
         }
-        Integer id = requirePositiveInt(req.getParameter("id"), "Invalid product id");
+        Integer id = requirePositiveInt(req.getParameter("id"), "Некорректный ID товара");
         if ("update".equals(action)) {
             Product product = buildProductFromRequest(req, id);
             services().productService().update(product);
@@ -209,22 +209,22 @@ public class AdminServlet extends BaseServlet {
     }
 
     private Product buildProductFromRequest(HttpServletRequest req, Integer id) {
-        String name = requireValue(req.getParameter("name"), "Product name is required");
-        BigDecimal price = requireNonNegativeDecimal(req.getParameter("price"), "Price must be a non-negative number");
-        Integer quantity = requireNonNegativeInt(req.getParameter("quantity"), "Quantity must be a non-negative integer");
-        Integer categoryId = requirePositiveInt(req.getParameter("categoryId"), "Category id must be a positive integer");
+        String name = requireValue(req.getParameter("name"), "Название товара обязательно");
+        BigDecimal price = requireNonNegativeDecimal(req.getParameter("price"), "Цена должна быть неотрицательной");
+        Integer quantity = requireNonNegativeInt(req.getParameter("quantity"), "Количество должно быть неотрицательным");
+        Integer categoryId = requirePositiveInt(req.getParameter("categoryId"), "ID категории должен быть положительным");
         String imageUrl = trimToNull(req.getParameter("imageUrl"));
         return new Product(id, name, price, quantity, categoryId, imageUrl);
     }
 
     private void orderAction(HttpServletRequest req, String action) {
-        Integer id = requirePositiveInt(req.getParameter("id"), "Invalid order id");
+        Integer id = requirePositiveInt(req.getParameter("id"), "Некорректный ID заказа");
         if ("update".equals(action)) {
             Order existingOrder = services().orderService().findById(id).orElse(null);
             if (existingOrder == null) {
-                throw new IllegalArgumentException("Order not found");
+                throw new IllegalArgumentException("Заказ не найден");
             }
-            Integer statusId = requirePositiveInt(req.getParameter("statusId"), "Status id must be a positive integer");
+            Integer statusId = requirePositiveInt(req.getParameter("statusId"), "ID статуса должен быть положительным");
             Order order = new Order();
             order.setId(existingOrder.getId());
             order.setCustomerId(existingOrder.getCustomerId());
@@ -240,13 +240,13 @@ public class AdminServlet extends BaseServlet {
 
     private void categoryAction(HttpServletRequest req, String action) {
         if ("create".equals(action)) {
-            String name = requireValue(req.getParameter("name"), "Category name is required");
+            String name = requireValue(req.getParameter("name"), "Название категории обязательно");
             services().categoryService().save(new Category(null, name));
             return;
         }
-        Integer id = requirePositiveInt(req.getParameter("id"), "Invalid category id");
+        Integer id = requirePositiveInt(req.getParameter("id"), "Некорректный ID категории");
         if ("update".equals(action)) {
-            String name = requireValue(req.getParameter("name"), "Category name is required");
+            String name = requireValue(req.getParameter("name"), "Название категории обязательно");
             services().categoryService().update(new Category(id, name));
             return;
         }
@@ -257,13 +257,13 @@ public class AdminServlet extends BaseServlet {
 
     private void statusAction(HttpServletRequest req, String action) {
         if ("create".equals(action)) {
-            String name = requireValue(req.getParameter("name"), "Status name is required");
+            String name = requireValue(req.getParameter("name"), "Название статуса обязательно");
             services().orderStatusService().save(new OrderStatus(null, name));
             return;
         }
-        Integer id = requirePositiveInt(req.getParameter("id"), "Invalid status id");
+        Integer id = requirePositiveInt(req.getParameter("id"), "Некорректный ID статуса");
         if ("update".equals(action)) {
-            String name = requireValue(req.getParameter("name"), "Status name is required");
+            String name = requireValue(req.getParameter("name"), "Название статуса обязательно");
             services().orderStatusService().update(new OrderStatus(id, name));
             return;
         }
@@ -433,4 +433,5 @@ public class AdminServlet extends BaseServlet {
     private record Pagination(int currentPage, int totalPages, int offset) {
     }
 }
+
 

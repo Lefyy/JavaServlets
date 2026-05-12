@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<c:set var="pageTitle" value="Catalog"/>
+<c:set var="pageTitle" value="Каталог"/>
 <jsp:include page="/WEB-INF/jsp/partials/layout-top.jsp"/>
 <style>
     .category-list .category-active { background-color: #e9ecef; }
@@ -9,9 +9,9 @@
 </style>
 <div class="row">
     <div class="col-md-3">
-        <h5>Categories</h5>
+        <h5>Категории</h5>
         <ul class="list-group category-list">
-            <li class="list-group-item ${empty currentCategory ? 'category-active' : ''}"><a href="${pageContext.request.contextPath}/products${empty currentSort ? '' : '?sort='.concat(currentSort)}">All</a></li>
+            <li class="list-group-item ${empty currentCategory ? 'category-active' : ''}"><a href="${pageContext.request.contextPath}/products${empty currentSort ? '' : '?sort='.concat(currentSort)}">Все</a></li>
             <c:forEach items="${categories}" var="category">
                 <li class="list-group-item ${currentCategory == category.id.toString() ? 'category-active' : ''}"><a href="${pageContext.request.contextPath}/products?category=${category.id}${empty currentSort ? '' : '&sort='.concat(currentSort)}">${category.name}</a></li>
             </c:forEach>
@@ -22,7 +22,7 @@
             <div class="d-flex justify-content-start w-100">
                 <a class="btn btn-sm btn-outline-secondary me-2" href="${pageContext.request.contextPath}/products?sort=price_asc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Price ^</a>
                 <a class="btn btn-sm btn-outline-secondary me-2" href="${pageContext.request.contextPath}/products?sort=price_desc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Price v</a>
-                <a class="btn btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/products?sort=popularity${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Popular</a>
+                <a class="btn btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/products?sort=popularity${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Популярные</a>
             </div>
         </div>
         <div class="row">
@@ -32,13 +32,13 @@
                         <div class="card-body">
                             <h5 class="card-title"><a href="${pageContext.request.contextPath}/products/${product.id}">${product.name}</a></h5>
                             <p class="card-text mb-1">${product.price} ?</p>
-                            <small class="text-muted">Stock: ${product.quantity}</small>
+                            <small class="text-muted">Остаток: ${product.quantity}</small>
                         </div>
                         <div class="card-footer bg-white">
                             <form method="post" action="${pageContext.request.contextPath}/cart/add" class="d-flex gap-2">
                                 <input type="hidden" name="productId" value="${product.id}">
                                 <input class="form-control" type="number" name="quantity" min="1" max="${product.quantity}" step="1" value="1" required>
-                                <button class="btn btn-outline-primary" <c:if test="${product.quantity == 0}">disabled</c:if>>Add</button>
+                                <button class="btn btn-outline-primary" <c:if test="${product.quantity == 0}">disabled</c:if>>В корзину</button>
                             </form>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
             </c:forEach>
         </div>
         <c:if test="${totalPages > 1}">
-            <nav aria-label="Catalog pages">
+            <nav aria-label="Каталог pages">
                 <ul class="pagination justify-content-center">
                     <c:choose>
                         <c:when test="${hasPrevious}">
@@ -82,3 +82,4 @@
     </div>
 </div>
 <jsp:include page="/WEB-INF/jsp/partials/layout-bottom.jsp"/>
+
