@@ -18,8 +18,9 @@
 </form>
 <div class="row g-3">
     <div class="col-md-6"><div class="card shadow-sm"><div class="card-body"><h5 class="card-title">Всего заказов</h5><p class="h4">${stats.totalOrders}</p></div></div></div>
-    <div class="col-md-6"><div class="card shadow-sm"><div class="card-body"><h5 class="card-title">Суммарная выручка</h5><p class="h4">${stats.totalRevenue} ₽</p></div></div></div>
+    <div class="col-md-6"><div class="card shadow-sm"><div class="card-body"><h5 class="card-title">Суммарная выручка</h5><p class="h4">${stats.totalRevenue} руб.</p></div></div></div>
     <div class="col-md-6"><div class="card shadow-sm"><div class="card-body"><h5 class="card-title">Топ 5 товаров</h5><ol class="mb-0 ps-3"><c:forEach items="${stats.topProducts}" var="product"><li>${product.label} — ${product.value} шт.</li></c:forEach><c:if test="${empty stats.topProducts}"><li>Нет данных</li></c:if></ol></div></div></div>
     <div class="col-md-6"><div class="card shadow-sm"><div class="card-body"><h5 class="card-title">Топ 5 покупателей</h5><ol class="mb-0 ps-3"><c:forEach items="${stats.topCustomers}" var="customer"><li>${customer.label} — ${customer.value} заказ(ов)</li></c:forEach><c:if test="${empty stats.topCustomers}"><li>Нет данных</li></c:if></ol></div></div></div>
 </div>
 <jsp:include page="/WEB-INF/jsp/partials/layout-bottom.jsp"/>
+

@@ -9,7 +9,7 @@
             <div class="d-flex justify-content-between align-items-center border-bottom py-2">
                 <div>
                     <strong>${item.product.name}</strong><br>
-                    <small>${item.lineTotal} ?</small>
+                    <small>${item.lineTotal} руб.</small>
                 </div>
                 <div class="d-flex gap-2">
                     <form method="post" action="${pageContext.request.contextPath}/cart/update" class="d-flex gap-2">
@@ -25,10 +25,9 @@
             </div>
         </c:forEach>
         <div class="mt-3 d-flex justify-content-between">
-            <strong>Итого: ${cartTotal} ?</strong>
+            <strong>Итого: ${cartTotal} руб.</strong>
             <a class="btn btn-primary" href="${pageContext.request.contextPath}/checkout">Оформить заказ</a>
         </div>
     </div>
 </div>
 <jsp:include page="/WEB-INF/jsp/partials/layout-bottom.jsp"/>
-

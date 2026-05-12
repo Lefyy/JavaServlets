@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-body">
                 <h2 class="mb-3">${product.name}</h2>
-                <p class="mb-1">Цена: <strong>${product.price} ?</strong></p>
+                <p class="mb-1">Цена: <strong>${product.price} руб.</strong></p>
                 <p class="mb-1">В наличии: ${product.quantity}</p>
                 <p class="text-muted">Категория: ${categoryName} <small>(ID: ${product.categoryId})</small></p>
             </div>
@@ -31,4 +31,3 @@
     </div>
 </div>
 <jsp:include page="/WEB-INF/jsp/partials/layout-bottom.jsp"/>
-

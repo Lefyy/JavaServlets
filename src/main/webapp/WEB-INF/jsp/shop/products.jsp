@@ -20,8 +20,8 @@
     <div class="col-md-9">
         <div class="d-flex justify-content-start mt-4 mb-3">
             <div class="d-flex justify-content-start w-100">
-                <a class="btn btn-sm btn-outline-secondary me-2" href="${pageContext.request.contextPath}/products?sort=price_asc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Price ^</a>
-                <a class="btn btn-sm btn-outline-secondary me-2" href="${pageContext.request.contextPath}/products?sort=price_desc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Price v</a>
+                <a class="btn btn-sm btn-outline-secondary me-2" href="${pageContext.request.contextPath}/products?sort=price_asc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Цена ↑</a>
+                <a class="btn btn-sm btn-outline-secondary me-2" href="${pageContext.request.contextPath}/products?sort=price_desc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Цена ↓</a>
                 <a class="btn btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/products?sort=popularity${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Популярные</a>
             </div>
         </div>
@@ -31,7 +31,7 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title"><a href="${pageContext.request.contextPath}/products/${product.id}">${product.name}</a></h5>
-                            <p class="card-text mb-1">${product.price} ?</p>
+                            <p class="card-text mb-1">${product.price} руб.</p>
                             <small class="text-muted">Остаток: ${product.quantity}</small>
                         </div>
                         <div class="card-footer bg-white">
@@ -46,7 +46,7 @@
             </c:forEach>
         </div>
         <c:if test="${totalPages > 1}">
-            <nav aria-label="Каталог pages">
+            <nav aria-label="Навигация по страницам каталога">
                 <ul class="pagination justify-content-center">
                     <c:choose>
                         <c:when test="${hasPrevious}">
@@ -82,4 +82,3 @@
     </div>
 </div>
 <jsp:include page="/WEB-INF/jsp/partials/layout-bottom.jsp"/>
-
