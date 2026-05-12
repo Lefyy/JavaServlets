@@ -16,4 +16,8 @@ public interface CustomerRepository extends Repository<Customer> {
     List<Customer> findByStaffStatus(boolean isStaff);
 
     List<Customer> findByName(String name);
+
+    List<Customer> findForAdmin(String query, int limit, int offset);
+
+    int countForAdmin(String query);
 }

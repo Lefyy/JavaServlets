@@ -11,6 +11,10 @@ public interface CategoryService {
 
     List<Category> findAll();
 
+    List<Category> findForAdmin(String query, int limit, int offset);
+
+    int countForAdmin(String query);
+
     Category save(Category category);
 
     void update(Category category);

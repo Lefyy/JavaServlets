@@ -20,4 +20,8 @@ public interface CustomerService {
     void updateOwnProfile(Customer currentCustomer, String name, String email, String password);
 
     boolean existsByEmail(String email);
+
+    List<Customer> findForAdmin(String query, int limit, int offset);
+
+    int countForAdmin(String query);
 }

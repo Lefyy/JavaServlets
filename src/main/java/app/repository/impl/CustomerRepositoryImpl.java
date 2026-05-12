@@ -186,6 +186,81 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         return customers;
     }
 
+    @Override
+    public List<Customer> findForAdmin(String query, int limit, int offset) {
+        List<Customer> customers = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM customers");
+        boolean hasQuery = query != null && !query.isBlank();
+        boolean numericQuery = hasQuery && query.trim().matches("\\d+");
+        if (hasQuery) {
+            sql.append(" WHERE ");
+            if (numericQuery) {
+                sql.append("id = ? OR name ILIKE ?");
+            } else {
+                sql.append("name ILIKE ?");
+            }
+        }
+        sql.append(" ORDER BY id ASC LIMIT ? OFFSET ?");
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+
+            int paramIndex = 1;
+            if (hasQuery) {
+                if (numericQuery) {
+                    pstmt.setInt(paramIndex++, Integer.parseInt(query.trim()));
+                }
+                pstmt.setString(paramIndex++, "%" + query.trim() + "%");
+            }
+            pstmt.setInt(paramIndex++, limit);
+            pstmt.setInt(paramIndex, offset);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    customers.add(mapResultSetToCustomer(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка при получении покупателей для админки", e);
+        }
+        return customers;
+    }
+
+    @Override
+    public int countForAdmin(String query) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM customers");
+        boolean hasQuery = query != null && !query.isBlank();
+        boolean numericQuery = hasQuery && query.trim().matches("\\d+");
+        if (hasQuery) {
+            sql.append(" WHERE ");
+            if (numericQuery) {
+                sql.append("id = ? OR name ILIKE ?");
+            } else {
+                sql.append("name ILIKE ?");
+            }
+        }
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+
+            int paramIndex = 1;
+            if (hasQuery) {
+                if (numericQuery) {
+                    pstmt.setInt(paramIndex++, Integer.parseInt(query.trim()));
+                }
+                pstmt.setString(paramIndex, "%" + query.trim() + "%");
+            }
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка при подсчете покупателей для админки", e);
+        }
+        return 0;
+    }
+
     private Customer mapResultSetToCustomer(ResultSet rs) throws SQLException {
         return new Customer(
                 rs.getInt("id"),

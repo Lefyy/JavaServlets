@@ -11,6 +11,10 @@ public interface OrderStatusService {
 
     List<OrderStatus> findAll();
 
+    List<OrderStatus> findForAdmin(String query, int limit, int offset);
+
+    int countForAdmin(String query);
+
     OrderStatus save(OrderStatus orderStatus);
 
     void update(OrderStatus orderStatus);

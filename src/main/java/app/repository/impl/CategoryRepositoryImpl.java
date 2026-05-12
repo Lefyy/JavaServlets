@@ -93,6 +93,79 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         }
     }
 
+    @Override
+    public List<Category> findForAdmin(String query, int limit, int offset) {
+        List<Category> categories = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM categories");
+        boolean hasQuery = query != null && !query.isBlank();
+        boolean numericQuery = hasQuery && query.trim().matches("\\d+");
+        if (hasQuery) {
+            sql.append(" WHERE ");
+            if (numericQuery) {
+                sql.append("id = ? OR name ILIKE ?");
+            } else {
+                sql.append("name ILIKE ?");
+            }
+        }
+        sql.append(" ORDER BY id ASC LIMIT ? OFFSET ?");
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+            if (hasQuery) {
+                if (numericQuery) {
+                    pstmt.setInt(paramIndex++, Integer.parseInt(query.trim()));
+                }
+                pstmt.setString(paramIndex++, "%" + query.trim() + "%");
+            }
+            pstmt.setInt(paramIndex++, limit);
+            pstmt.setInt(paramIndex, offset);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    categories.add(mapResultSetToCategory(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error loading admin categories", e);
+        }
+        return categories;
+    }
+
+    @Override
+    public int countForAdmin(String query) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM categories");
+        boolean hasQuery = query != null && !query.isBlank();
+        boolean numericQuery = hasQuery && query.trim().matches("\\d+");
+        if (hasQuery) {
+            sql.append(" WHERE ");
+            if (numericQuery) {
+                sql.append("id = ? OR name ILIKE ?");
+            } else {
+                sql.append("name ILIKE ?");
+            }
+        }
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+            if (hasQuery) {
+                if (numericQuery) {
+                    pstmt.setInt(paramIndex++, Integer.parseInt(query.trim()));
+                }
+                pstmt.setString(paramIndex, "%" + query.trim() + "%");
+            }
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error counting admin categories", e);
+        }
+        return 0;
+    }
+
     private Category mapResultSetToCategory(ResultSet rs) throws SQLException {
         return new Category(rs.getInt("id"), rs.getString("name"));
     }

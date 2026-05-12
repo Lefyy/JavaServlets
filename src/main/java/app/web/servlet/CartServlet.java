@@ -62,7 +62,7 @@ public class CartServlet extends BaseServlet {
         Customer customer = WebUtils.currentCustomer(req);
         Map<Integer, Integer> cart = cart(req.getSession());
         if (cart.isEmpty()) {
-            WebUtils.setFlash(req, "Корзина пуста.");
+            WebUtils.setFlash(req, "Cart is empty.");
             resp.sendRedirect(req.getContextPath() + "/cart");
             return;
         }
@@ -72,9 +72,14 @@ public class CartServlet extends BaseServlet {
             items.add(new OrderService.OrderItemDto(entry.getKey(), entry.getValue()));
         }
 
-        Order order = services().orderService().createOrder(customer.getId(), items);
-        req.getSession().removeAttribute("cartItems");
-        resp.sendRedirect(req.getContextPath() + "/orders/success?id=" + order.getId());
+        try {
+            Order order = services().orderService().createOrder(customer.getId(), items);
+            req.getSession().removeAttribute("cartItems");
+            resp.sendRedirect(req.getContextPath() + "/orders/success?id=" + order.getId());
+        } catch (IllegalArgumentException ex) {
+            WebUtils.setFlash(req, ex.getMessage());
+            resp.sendRedirect(req.getContextPath() + "/cart");
+        }
     }
 
     private void populateCart(HttpServletRequest req) {
@@ -101,26 +106,69 @@ public class CartServlet extends BaseServlet {
     }
 
     private void addItem(HttpServletRequest req) {
-        Integer productId = intParam(req, "productId");
-        int qty = Math.max(1, intParam(req, "quantity") == null ? 1 : intParam(req, "quantity"));
+        Integer productId = safeIntParam(req, "productId");
+        Integer requestedQty = safeIntParam(req, "quantity");
+        int qty = requestedQty == null ? 1 : requestedQty;
+        if (productId == null || qty < 1) {
+            WebUtils.setFlash(req, "Invalid product parameters.");
+            return;
+        }
+
+        Optional<Product> productOpt = services().productService().findById(productId);
+        if (productOpt.isEmpty()) {
+            WebUtils.setFlash(req, "Product not found.");
+            return;
+        }
+        Product product = productOpt.get();
+        if (product.getQuantity() <= 0) {
+            WebUtils.setFlash(req, "Product is out of stock.");
+            return;
+        }
+
         Map<Integer, Integer> cart = cart(req.getSession());
-        cart.merge(productId, qty, Integer::sum);
+        int currentQtyInCart = cart.getOrDefault(productId, 0);
+        int targetQty = currentQtyInCart + qty;
+        if (targetQty > product.getQuantity()) {
+            WebUtils.setFlash(req, "Requested quantity exceeds stock.");
+            return;
+        }
+        cart.put(productId, targetQty);
     }
 
     private void updateItem(HttpServletRequest req) {
-        Integer productId = intParam(req, "productId");
-        int qty = Math.max(0, intParam(req, "quantity") == null ? 0 : intParam(req, "quantity"));
+        Integer productId = safeIntParam(req, "productId");
+        Integer requestedQty = safeIntParam(req, "quantity");
+        int qty = requestedQty == null ? 0 : requestedQty;
+        if (productId == null || qty < 0) {
+            WebUtils.setFlash(req, "Invalid cart update parameters.");
+            return;
+        }
+
         Map<Integer, Integer> cart = cart(req.getSession());
         if (qty == 0) {
             cart.remove(productId);
-        } else {
-            cart.put(productId, qty);
+            return;
         }
+
+        Optional<Product> productOpt = services().productService().findById(productId);
+        if (productOpt.isEmpty()) {
+            cart.remove(productId);
+            WebUtils.setFlash(req, "Product not found and removed from cart.");
+            return;
+        }
+        Product product = productOpt.get();
+        if (qty > product.getQuantity()) {
+            WebUtils.setFlash(req, "Requested quantity exceeds stock.");
+            return;
+        }
+        cart.put(productId, qty);
     }
 
     private void removeItem(HttpServletRequest req) {
-        Integer productId = intParam(req, "productId");
-        cart(req.getSession()).remove(productId);
+        Integer productId = safeIntParam(req, "productId");
+        if (productId != null) {
+            cart(req.getSession()).remove(productId);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -132,5 +180,17 @@ public class CartServlet extends BaseServlet {
         Map<Integer, Integer> created = new HashMap<>();
         session.setAttribute("cartItems", created);
         return created;
+    }
+
+    private Integer safeIntParam(HttpServletRequest req, String key) {
+        String value = req.getParameter(key);
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        try {
+            return Integer.parseInt(value.trim());
+        } catch (NumberFormatException ex) {
+            return null;
+        }
     }
 }

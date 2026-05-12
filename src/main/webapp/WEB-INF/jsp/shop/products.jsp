@@ -1,41 +1,28 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<c:set var="pageTitle" value="Каталог"/>
+<c:set var="pageTitle" value="Catalog"/>
 <jsp:include page="/WEB-INF/jsp/partials/layout-top.jsp"/>
 <style>
-    .category-list .category-active {
-        background-color: #e9ecef;
-    }
-    .category-list .category-active a {
-        color: #212529;
-    }
-    .category-list .category-active a:hover {
-        color: #212529;
-    }
+    .category-list .category-active { background-color: #e9ecef; }
+    .category-list .category-active a { color: #212529; }
+    .category-list .category-active a:hover { color: #212529; }
 </style>
 <div class="row">
     <div class="col-md-3">
-        <h5>Категории</h5>
+        <h5>Categories</h5>
         <ul class="list-group category-list">
-            <li class="list-group-item ${empty currentCategory ? 'category-active' : ''}">
-                <a href="${pageContext.request.contextPath}/products${empty currentSort ? '' : '?sort='.concat(currentSort)}">Все</a>
-            </li>
+            <li class="list-group-item ${empty currentCategory ? 'category-active' : ''}"><a href="${pageContext.request.contextPath}/products${empty currentSort ? '' : '?sort='.concat(currentSort)}">All</a></li>
             <c:forEach items="${categories}" var="category">
-                <li class="list-group-item ${currentCategory == category.id.toString() ? 'category-active' : ''}">
-                    <a href="${pageContext.request.contextPath}/products?category=${category.id}${empty currentSort ? '' : '&sort='.concat(currentSort)}">${category.name}</a>
-                </li>
+                <li class="list-group-item ${currentCategory == category.id.toString() ? 'category-active' : ''}"><a href="${pageContext.request.contextPath}/products?category=${category.id}${empty currentSort ? '' : '&sort='.concat(currentSort)}">${category.name}</a></li>
             </c:forEach>
         </ul>
     </div>
     <div class="col-md-9">
         <div class="d-flex justify-content-start mt-4 mb-3">
             <div class="d-flex justify-content-start w-100">
-                <a class="btn btn-sm btn-outline-secondary me-2"
-                   href="${pageContext.request.contextPath}/products?sort=price_asc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Цена ↑</a>
-                <a class="btn btn-sm btn-outline-secondary me-2"
-                   href="${pageContext.request.contextPath}/products?sort=price_desc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Цена ↓</a>
-                <a class="btn btn-sm btn-outline-secondary"
-                   href="${pageContext.request.contextPath}/products?sort=popularity${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Популярные</a>
+                <a class="btn btn-sm btn-outline-secondary me-2" href="${pageContext.request.contextPath}/products?sort=price_asc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Price ^</a>
+                <a class="btn btn-sm btn-outline-secondary me-2" href="${pageContext.request.contextPath}/products?sort=price_desc${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Price v</a>
+                <a class="btn btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/products?sort=popularity${empty currentCategory ? '' : '&category='.concat(currentCategory)}">Popular</a>
             </div>
         </div>
         <div class="row">
@@ -44,14 +31,14 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title"><a href="${pageContext.request.contextPath}/products/${product.id}">${product.name}</a></h5>
-                            <p class="card-text mb-1">${product.price} ₽</p>
-                            <small class="text-muted">Остаток: ${product.quantity}</small>
+                            <p class="card-text mb-1">${product.price} ?</p>
+                            <small class="text-muted">Stock: ${product.quantity}</small>
                         </div>
                         <div class="card-footer bg-white">
                             <form method="post" action="${pageContext.request.contextPath}/cart/add" class="d-flex gap-2">
                                 <input type="hidden" name="productId" value="${product.id}">
-                                <input class="form-control" type="number" name="quantity" min="1" value="1">
-                                <button class="btn btn-outline-primary">В корзину</button>
+                                <input class="form-control" type="number" name="quantity" min="1" max="${product.quantity}" step="1" value="1" required>
+                                <button class="btn btn-outline-primary" <c:if test="${product.quantity == 0}">disabled</c:if>>Add</button>
                             </form>
                         </div>
                     </div>
@@ -59,16 +46,12 @@
             </c:forEach>
         </div>
         <c:if test="${totalPages > 1}">
-            <nav aria-label="Навигация по страницам">
+            <nav aria-label="Catalog pages">
                 <ul class="pagination justify-content-center">
                     <c:choose>
                         <c:when test="${hasPrevious}">
-                            <li class="page-item">
-                                <a class="page-link" href="${pageContext.request.contextPath}/products?page=1${empty currentCategory ? '' : '&category='.concat(currentCategory)}${empty currentSort ? '' : '&sort='.concat(currentSort)}">&laquo;&laquo;</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="${pageContext.request.contextPath}/products?page=${currentPage - 1}${empty currentCategory ? '' : '&category='.concat(currentCategory)}${empty currentSort ? '' : '&sort='.concat(currentSort)}">&lt;</a>
-                            </li>
+                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/products?page=1${empty currentCategory ? '' : '&category='.concat(currentCategory)}${empty currentSort ? '' : '&sort='.concat(currentSort)}">&laquo;&laquo;</a></li>
+                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/products?page=${currentPage - 1}${empty currentCategory ? '' : '&category='.concat(currentCategory)}${empty currentSort ? '' : '&sort='.concat(currentSort)}">&lt;</a></li>
                         </c:when>
                         <c:otherwise>
                             <li class="page-item disabled"><span class="page-link">&laquo;&laquo;</span></li>
@@ -78,25 +61,15 @@
 
                     <c:forEach begin="${currentPage - 1 < 1 ? 1 : currentPage - 1}" end="${currentPage + 1 > totalPages ? totalPages : currentPage + 1}" var="i">
                         <c:choose>
-                            <c:when test="${i == currentPage}">
-                                <li class="page-item active"><span class="page-link">${i}</span></li>
-                            </c:when>
-                            <c:otherwise>
-                                <li class="page-item">
-                                    <a class="page-link" href="${pageContext.request.contextPath}/products?page=${i}${empty currentCategory ? '' : '&category='.concat(currentCategory)}${empty currentSort ? '' : '&sort='.concat(currentSort)}">${i}</a>
-                                </li>
-                            </c:otherwise>
+                            <c:when test="${i == currentPage}"><li class="page-item active"><span class="page-link">${i}</span></li></c:when>
+                            <c:otherwise><li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/products?page=${i}${empty currentCategory ? '' : '&category='.concat(currentCategory)}${empty currentSort ? '' : '&sort='.concat(currentSort)}">${i}</a></li></c:otherwise>
                         </c:choose>
                     </c:forEach>
 
                     <c:choose>
                         <c:when test="${hasNext}">
-                            <li class="page-item">
-                                <a class="page-link" href="${pageContext.request.contextPath}/products?page=${currentPage + 1}${empty currentCategory ? '' : '&category='.concat(currentCategory)}${empty currentSort ? '' : '&sort='.concat(currentSort)}">&gt;</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="${pageContext.request.contextPath}/products?page=${totalPages}${empty currentCategory ? '' : '&category='.concat(currentCategory)}${empty currentSort ? '' : '&sort='.concat(currentSort)}">&raquo;&raquo;</a>
-                            </li>
+                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/products?page=${currentPage + 1}${empty currentCategory ? '' : '&category='.concat(currentCategory)}${empty currentSort ? '' : '&sort='.concat(currentSort)}">&gt;</a></li>
+                            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/products?page=${totalPages}${empty currentCategory ? '' : '&category='.concat(currentCategory)}${empty currentSort ? '' : '&sort='.concat(currentSort)}">&raquo;&raquo;</a></li>
                         </c:when>
                         <c:otherwise>
                             <li class="page-item disabled"><span class="page-link">&gt;</span></li>

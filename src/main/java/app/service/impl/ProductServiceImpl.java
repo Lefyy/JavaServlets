@@ -46,6 +46,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> findForAdmin(String query, int limit, int offset) {
+        return productRepository.findForAdmin(query, limit, offset);
+    }
+
+    @Override
+    public int countForAdmin(String query) {
+        return productRepository.countForAdmin(query);
+    }
+
+    @Override
     public Product create(Product product) {
         return productRepository.save(product);
     }

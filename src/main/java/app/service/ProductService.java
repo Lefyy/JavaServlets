@@ -19,6 +19,10 @@ public interface ProductService {
 
     List<Product> findByNameContaining(String name);
 
+    List<Product> findForAdmin(String query, int limit, int offset);
+
+    int countForAdmin(String query);
+
     Product create(Product product);
 
     void update(Product product);

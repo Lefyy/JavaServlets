@@ -75,6 +75,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> findForAdmin(String query, String sortDate, int limit, int offset) {
+        return orderRepository.findForAdmin(query, sortDate, limit, offset);
+    }
+
+    @Override
+    public int countForAdmin(String query) {
+        return orderRepository.countForAdmin(query);
+    }
+
+    @Override
     public void update(Order order) {
         orderRepository.update(order);
     }

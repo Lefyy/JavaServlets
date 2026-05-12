@@ -17,6 +17,10 @@ public interface OrderService {
 
     List<Order> findAll();
 
+    List<Order> findForAdmin(String query, String sortDate, int limit, int offset);
+
+    int countForAdmin(String query);
+
     void update(Order order);
 
     boolean delete(Integer orderId, Integer requestingCustomerId, boolean isStaff);

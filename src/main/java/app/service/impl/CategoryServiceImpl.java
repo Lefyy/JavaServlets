@@ -26,6 +26,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> findForAdmin(String query, int limit, int offset) {
+        return categoryRepository.findForAdmin(query, limit, offset);
+    }
+
+    @Override
+    public int countForAdmin(String query) {
+        return categoryRepository.countForAdmin(query);
+    }
+
+    @Override
     public Category save(Category category) {
         return categoryRepository.save(category);
     }

@@ -71,4 +71,14 @@ public class CustomerServiceImpl implements CustomerService {
     public boolean existsByEmail(String email) {
         return customerRepository.existsByEmail(email);
     }
+
+    @Override
+    public List<Customer> findForAdmin(String query, int limit, int offset) {
+        return customerRepository.findForAdmin(query, limit, offset);
+    }
+
+    @Override
+    public int countForAdmin(String query) {
+        return customerRepository.countForAdmin(query);
+    }
 }

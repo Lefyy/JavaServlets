@@ -15,4 +15,8 @@ public interface ProductRepository extends Repository<Product> {
     List<Product> findByNameContaining(String name);
 
     void updateQuantity(Integer productId, int newQuantity);
+
+    List<Product> findForAdmin(String query, int limit, int offset);
+
+    int countForAdmin(String query);
 }

@@ -26,6 +26,16 @@ public class OrderStatusServiceImpl implements OrderStatusService {
     }
 
     @Override
+    public List<OrderStatus> findForAdmin(String query, int limit, int offset) {
+        return orderStatusRepository.findForAdmin(query, limit, offset);
+    }
+
+    @Override
+    public int countForAdmin(String query) {
+        return orderStatusRepository.countForAdmin(query);
+    }
+
+    @Override
     public OrderStatus save(OrderStatus orderStatus) {
         return orderStatusRepository.save(orderStatus);
     }
