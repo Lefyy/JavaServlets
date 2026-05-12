@@ -1,46 +1,46 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
-<c:set var="pageTitle" value="Заказы"/>
+<c:set var="pageTitle" value="Р—Р°РєР°Р·С‹"/>
 <jsp:include page="/WEB-INF/jsp/partials/layout-top.jsp"/>
-<h3><i class="fas fa-shopping-cart"></i> Заказы</h3>
-<a href="${pageContext.request.contextPath}/admin" class="btn btn-sm btn-outline-secondary mb-3">&larr; Назад к админ-панели</a>
+<h3><i class="fas fa-shopping-cart"></i> Р—Р°РєР°Р·С‹</h3>
+<a href="${pageContext.request.contextPath}/admin" class="btn btn-sm btn-outline-secondary mb-3">&larr; РќР°Р·Р°Рґ Рє Р°РґРјРёРЅ-РїР°РЅРµР»Рё</a>
 
 <div class="card p-3 mb-3">
     <form method="get" action="${pageContext.request.contextPath}/admin/orders" class="row g-2 align-items-end">
         <div class="col-md-4">
-            <label class="form-label mb-1">Поиск по ID заказа</label>
+            <label class="form-label mb-1">РџРѕРёСЃРє РїРѕ ID Р·Р°РєР°Р·Р°</label>
             <input class="form-control" name="q" value="${q}" maxlength="120" placeholder="e.g. 501">
         </div>
         <div class="col-md-3">
-            <label class="form-label mb-1">Сортировка по дате</label>
+            <label class="form-label mb-1">РЎРѕСЂС‚РёСЂРѕРІРєР° РїРѕ РґР°С‚Рµ</label>
             <select class="form-select" name="sortDate">
-                <option value="desc" <c:if test="${sortDate == 'desc'}">selected</c:if>>Сначала новые</option>
-                <option value="asc" <c:if test="${sortDate == 'asc'}">selected</c:if>>Сначала старые</option>
+                <option value="desc" <c:if test="${sortDate == 'desc'}">selected</c:if>>РЎРЅР°С‡Р°Р»Р° РЅРѕРІС‹Рµ</option>
+                <option value="asc" <c:if test="${sortDate == 'asc'}">selected</c:if>>РЎРЅР°С‡Р°Р»Р° СЃС‚Р°СЂС‹Рµ</option>
             </select>
         </div>
-        <div class="col-md-2"><button class="btn btn-primary w-100" type="submit">Применить</button></div>
-        <div class="col-md-2"><a class="btn btn-outline-secondary w-100" href="${pageContext.request.contextPath}/admin/orders">Сброс</a></div>
+        <div class="col-md-2"><button class="btn btn-primary w-100" type="submit">РџСЂРёРјРµРЅРёС‚СЊ</button></div>
+        <div class="col-md-2"><a class="btn btn-outline-secondary w-100" href="${pageContext.request.contextPath}/admin/orders">РЎР±СЂРѕСЃ</a></div>
     </form>
 </div>
 
 <div class="table-responsive">
     <table class="table table-sm table-hover align-middle">
-        <thead><tr><th>ID</th><th>Покупатель</th><th>Статус</th><th>Создан</th><th>Состав</th><th>Обновить</th><th>Удалить</th></tr></thead>
+        <thead><tr><th>ID</th><th>РџРѕРєСѓРїР°С‚РµР»СЊ</th><th>РЎС‚Р°С‚СѓСЃ</th><th>РЎРѕР·РґР°РЅ</th><th>РЎРѕСЃС‚Р°РІ</th><th>РћР±РЅРѕРІРёС‚СЊ</th><th>РЈРґР°Р»РёС‚СЊ</th></tr></thead>
         <tbody>
         <c:forEach items="${orders}" var="order">
             <tr>
                 <td>${order.id}</td>
                 <td>${customerNames[order.customerId]} <small class="text-muted">(ID: ${order.customerId})</small></td>
                 <td>${statusNames[order.statusId]} <small class="text-muted">(ID: ${order.statusId})</small></td>
-                <td><fmt:formatDate value="${orderСозданAtDates[order.id]}" pattern="yyyy-MM-dd HH:mm"/></td>
-                <td><button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#items-order-${order.id}" aria-expanded="false" aria-controls="items-order-${order.id}">Показать товары</button></td>
-                <td><button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#edit-order-${order.id}" aria-expanded="false" aria-controls="edit-order-${order.id}">Редактировать</button></td>
+                <td><fmt:formatDate value="${orderРЎРѕР·РґР°РЅAtDates[order.id]}" pattern="yyyy-MM-dd HH:mm"/></td>
+                <td><button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#items-order-${order.id}" aria-expanded="false" aria-controls="items-order-${order.id}">РџРѕРєР°Р·Р°С‚СЊ С‚РѕРІР°СЂС‹</button></td>
+                <td><button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#edit-order-${order.id}" aria-expanded="false" aria-controls="edit-order-${order.id}">Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ</button></td>
                 <td>
                     <form method="post" action="${pageContext.request.contextPath}/admin">
                         <input type="hidden" name="entity" value="order"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="${order.id}">
                         <input type="hidden" name="q" value="${q}"><input type="hidden" name="page" value="${currentPage}"><input type="hidden" name="sortDate" value="${sortDate}">
-                        <button class="btn btn-sm btn-outline-danger">Удалить</button>
+                        <button class="btn btn-sm btn-outline-danger">РЈРґР°Р»РёС‚СЊ</button>
                     </form>
                 </td>
             </tr>
@@ -49,11 +49,11 @@
                     <div class="collapse mt-2" id="items-order-${order.id}">
                         <div class="card card-body">
                             <c:choose>
-                                <c:when test="${empty orderСоставByOrderId[order.id]}"><span class="text-muted">Позиции не найдены</span></c:when>
+                                <c:when test="${empty orderРЎРѕСЃС‚Р°РІByOrderId[order.id]}"><span class="text-muted">РџРѕР·РёС†РёРё РЅРµ РЅР°Р№РґРµРЅС‹</span></c:when>
                                 <c:otherwise>
                                     <ul class="mb-0 ps-3">
-                                        <c:forEach items="${orderСоставByOrderId[order.id]}" var="item">
-                                            <li>${productNames[item.productId]} - ${item.quantity} шт. - ${item.priceAtPurchase}</li>
+                                        <c:forEach items="${orderРЎРѕСЃС‚Р°РІByOrderId[order.id]}" var="item">
+                                            <li>${productNames[item.productId]} - ${item.quantity} С€С‚. - ${item.priceAtPurchase}</li>
                                         </c:forEach>
                                     </ul>
                                 </c:otherwise>
@@ -74,7 +74,7 @@
                                         <c:forEach items="${statuses}" var="status"><option value="${status.id}" <c:if test="${status.id == order.statusId}">selected</c:if>>${status.id}: ${status.name}</option></c:forEach>
                                     </select>
                                 </div>
-                                <div class="col-md-2"><button class="btn btn-sm btn-outline-primary">Сохранить</button></div>
+                                <div class="col-md-2"><button class="btn btn-sm btn-outline-primary">РЎРѕС…СЂР°РЅРёС‚СЊ</button></div>
                             </form>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
 </div>
 
 <c:if test="${totalPages > 1}">
-    <nav aria-label="Страницы заказов">
+    <nav aria-label="РЎС‚СЂР°РЅРёС†С‹ Р·Р°РєР°Р·РѕРІ">
         <ul class="pagination justify-content-center mt-3">
             <li class="page-item ${hasPrevious ? '' : 'disabled'}"><a class="page-link" href="${pageContext.request.contextPath}/admin/orders?page=${currentPage - 1}&q=${q}&sortDate=${sortDate}">&lt;</a></li>
             <c:forEach begin="1" end="${totalPages}" var="i"><li class="page-item ${i == currentPage ? 'active' : ''}"><a class="page-link" href="${pageContext.request.contextPath}/admin/orders?page=${i}&q=${q}&sortDate=${sortDate}">${i}</a></li></c:forEach>

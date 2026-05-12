@@ -62,7 +62,7 @@ public class CartServlet extends BaseServlet {
         Customer customer = WebUtils.currentCustomer(req);
         Map<Integer, Integer> cart = cart(req.getSession());
         if (cart.isEmpty()) {
-            WebUtils.setFlash(req, "Корзина пуста.");
+            WebUtils.setFlash(req, "РљРѕСЂР·РёРЅР° РїСѓСЃС‚Р°.");
             resp.sendRedirect(req.getContextPath() + "/cart");
             return;
         }
@@ -110,18 +110,18 @@ public class CartServlet extends BaseServlet {
         Integer requestedQty = safeIntParam(req, "quantity");
         int qty = requestedQty == null ? 1 : requestedQty;
         if (productId == null || qty < 1) {
-            WebUtils.setFlash(req, "Некорректные параметры товара.");
+            WebUtils.setFlash(req, "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹ С‚РѕРІР°СЂР°.");
             return;
         }
 
         Optional<Product> productOpt = services().productService().findById(productId);
         if (productOpt.isEmpty()) {
-            WebUtils.setFlash(req, "Товар не найден.");
+            WebUtils.setFlash(req, "РўРѕРІР°СЂ РЅРµ РЅР°Р№РґРµРЅ.");
             return;
         }
         Product product = productOpt.get();
         if (product.getQuantity() <= 0) {
-            WebUtils.setFlash(req, "Товар закончился на складе.");
+            WebUtils.setFlash(req, "РўРѕРІР°СЂ Р·Р°РєРѕРЅС‡РёР»СЃСЏ РЅР° СЃРєР»Р°РґРµ.");
             return;
         }
 
@@ -129,7 +129,7 @@ public class CartServlet extends BaseServlet {
         int currentQtyInCart = cart.getOrDefault(productId, 0);
         int targetQty = currentQtyInCart + qty;
         if (targetQty > product.getQuantity()) {
-            WebUtils.setFlash(req, "Нельзя указать количество больше остатка на складе.");
+            WebUtils.setFlash(req, "РќРµР»СЊР·СЏ СѓРєР°Р·Р°С‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ Р±РѕР»СЊС€Рµ РѕСЃС‚Р°С‚РєР° РЅР° СЃРєР»Р°РґРµ.");
             return;
         }
         cart.put(productId, targetQty);
@@ -140,7 +140,7 @@ public class CartServlet extends BaseServlet {
         Integer requestedQty = safeIntParam(req, "quantity");
         int qty = requestedQty == null ? 0 : requestedQty;
         if (productId == null || qty < 0) {
-            WebUtils.setFlash(req, "Некорректные параметры обновления корзины.");
+            WebUtils.setFlash(req, "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹ РѕР±РЅРѕРІР»РµРЅРёСЏ РєРѕСЂР·РёРЅС‹.");
             return;
         }
 
@@ -153,12 +153,12 @@ public class CartServlet extends BaseServlet {
         Optional<Product> productOpt = services().productService().findById(productId);
         if (productOpt.isEmpty()) {
             cart.remove(productId);
-            WebUtils.setFlash(req, "Товар не найден и был удален из корзины.");
+            WebUtils.setFlash(req, "РўРѕРІР°СЂ РЅРµ РЅР°Р№РґРµРЅ Рё Р±С‹Р» СѓРґР°Р»РµРЅ РёР· РєРѕСЂР·РёРЅС‹.");
             return;
         }
         Product product = productOpt.get();
         if (qty > product.getQuantity()) {
-            WebUtils.setFlash(req, "Нельзя указать количество больше остатка на складе.");
+            WebUtils.setFlash(req, "РќРµР»СЊР·СЏ СѓРєР°Р·Р°С‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ Р±РѕР»СЊС€Рµ РѕСЃС‚Р°С‚РєР° РЅР° СЃРєР»Р°РґРµ.");
             return;
         }
         cart.put(productId, qty);

@@ -153,9 +153,9 @@ public class AdminServlet extends BaseServlet {
 
     private void customerAction(HttpServletRequest req, String action) {
         if ("create".equals(action)) {
-            String name = requireValue(req.getParameter("name"), "Имя обязательно");
-            String email = requireValue(req.getParameter("email"), "Email обязателен");
-            String password = requireValue(req.getParameter("password"), "Пароль обязателен");
+            String name = requireValue(req.getParameter("name"), "РРјСЏ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ");
+            String email = requireValue(req.getParameter("email"), "Email РѕР±СЏР·Р°С‚РµР»РµРЅ");
+            String password = requireValue(req.getParameter("password"), "РџР°СЂРѕР»СЊ РѕР±СЏР·Р°С‚РµР»РµРЅ");
             services().customerService().save(new Customer(
                     null,
                     name,
@@ -165,15 +165,15 @@ public class AdminServlet extends BaseServlet {
             ));
             return;
         }
-        Integer id = requirePositiveInt(req.getParameter("id"), "Некорректный ID покупателя");
+        Integer id = requirePositiveInt(req.getParameter("id"), "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ ID РїРѕРєСѓРїР°С‚РµР»СЏ");
         if ("update".equals(action)) {
-            String name = requireValue(req.getParameter("name"), "Имя обязательно");
-            String email = requireValue(req.getParameter("email"), "Email обязателен");
+            String name = requireValue(req.getParameter("name"), "РРјСЏ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ");
+            String email = requireValue(req.getParameter("email"), "Email РѕР±СЏР·Р°С‚РµР»РµРЅ");
             String password = trimToNull(req.getParameter("password"));
             if (password == null) {
                 Customer existing = services().customerService().findById(id).orElse(null);
                 if (existing == null) {
-                    throw new IllegalArgumentException("Покупатель не найден");
+                    throw new IllegalArgumentException("РџРѕРєСѓРїР°С‚РµР»СЊ РЅРµ РЅР°Р№РґРµРЅ");
                 }
                 password = existing.getPassword();
             }
@@ -197,7 +197,7 @@ public class AdminServlet extends BaseServlet {
             services().productService().create(product);
             return;
         }
-        Integer id = requirePositiveInt(req.getParameter("id"), "Некорректный ID товара");
+        Integer id = requirePositiveInt(req.getParameter("id"), "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ ID С‚РѕРІР°СЂР°");
         if ("update".equals(action)) {
             Product product = buildProductFromRequest(req, id);
             services().productService().update(product);
@@ -209,22 +209,22 @@ public class AdminServlet extends BaseServlet {
     }
 
     private Product buildProductFromRequest(HttpServletRequest req, Integer id) {
-        String name = requireValue(req.getParameter("name"), "Название товара обязательно");
-        BigDecimal price = requireNonNegativeDecimal(req.getParameter("price"), "Цена должна быть неотрицательной");
-        Integer quantity = requireNonNegativeInt(req.getParameter("quantity"), "Количество должно быть неотрицательным");
-        Integer categoryId = requirePositiveInt(req.getParameter("categoryId"), "ID категории должен быть положительным");
+        String name = requireValue(req.getParameter("name"), "РќР°Р·РІР°РЅРёРµ С‚РѕРІР°СЂР° РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ");
+        BigDecimal price = requireNonNegativeDecimal(req.getParameter("price"), "Р¦РµРЅР° РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РЅРµРѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕР№");
+        Integer quantity = requireNonNegativeInt(req.getParameter("quantity"), "РљРѕР»РёС‡РµСЃС‚РІРѕ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РЅРµРѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј");
+        Integer categoryId = requirePositiveInt(req.getParameter("categoryId"), "ID РєР°С‚РµРіРѕСЂРёРё РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Рј");
         String imageUrl = trimToNull(req.getParameter("imageUrl"));
         return new Product(id, name, price, quantity, categoryId, imageUrl);
     }
 
     private void orderAction(HttpServletRequest req, String action) {
-        Integer id = requirePositiveInt(req.getParameter("id"), "Некорректный ID заказа");
+        Integer id = requirePositiveInt(req.getParameter("id"), "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ ID Р·Р°РєР°Р·Р°");
         if ("update".equals(action)) {
             Order existingOrder = services().orderService().findById(id).orElse(null);
             if (existingOrder == null) {
-                throw new IllegalArgumentException("Заказ не найден");
+                throw new IllegalArgumentException("Р—Р°РєР°Р· РЅРµ РЅР°Р№РґРµРЅ");
             }
-            Integer statusId = requirePositiveInt(req.getParameter("statusId"), "ID статуса должен быть положительным");
+            Integer statusId = requirePositiveInt(req.getParameter("statusId"), "ID СЃС‚Р°С‚СѓСЃР° РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Рј");
             Order order = new Order();
             order.setId(existingOrder.getId());
             order.setCustomerId(existingOrder.getCustomerId());
@@ -240,13 +240,13 @@ public class AdminServlet extends BaseServlet {
 
     private void categoryAction(HttpServletRequest req, String action) {
         if ("create".equals(action)) {
-            String name = requireValue(req.getParameter("name"), "Название категории обязательно");
+            String name = requireValue(req.getParameter("name"), "РќР°Р·РІР°РЅРёРµ РєР°С‚РµРіРѕСЂРёРё РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ");
             services().categoryService().save(new Category(null, name));
             return;
         }
-        Integer id = requirePositiveInt(req.getParameter("id"), "Некорректный ID категории");
+        Integer id = requirePositiveInt(req.getParameter("id"), "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ ID РєР°С‚РµРіРѕСЂРёРё");
         if ("update".equals(action)) {
-            String name = requireValue(req.getParameter("name"), "Название категории обязательно");
+            String name = requireValue(req.getParameter("name"), "РќР°Р·РІР°РЅРёРµ РєР°С‚РµРіРѕСЂРёРё РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ");
             services().categoryService().update(new Category(id, name));
             return;
         }
@@ -257,13 +257,13 @@ public class AdminServlet extends BaseServlet {
 
     private void statusAction(HttpServletRequest req, String action) {
         if ("create".equals(action)) {
-            String name = requireValue(req.getParameter("name"), "Название статуса обязательно");
+            String name = requireValue(req.getParameter("name"), "РќР°Р·РІР°РЅРёРµ СЃС‚Р°С‚СѓСЃР° РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ");
             services().orderStatusService().save(new OrderStatus(null, name));
             return;
         }
-        Integer id = requirePositiveInt(req.getParameter("id"), "Некорректный ID статуса");
+        Integer id = requirePositiveInt(req.getParameter("id"), "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ ID СЃС‚Р°С‚СѓСЃР°");
         if ("update".equals(action)) {
-            String name = requireValue(req.getParameter("name"), "Название статуса обязательно");
+            String name = requireValue(req.getParameter("name"), "РќР°Р·РІР°РЅРёРµ СЃС‚Р°С‚СѓСЃР° РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ");
             services().orderStatusService().update(new OrderStatus(id, name));
             return;
         }

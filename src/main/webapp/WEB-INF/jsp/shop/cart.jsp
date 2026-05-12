@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<c:set var="pageTitle" value="Корзина"/>
+<c:set var="pageTitle" value="РљРѕСЂР·РёРЅР°"/>
 <jsp:include page="/WEB-INF/jsp/partials/layout-top.jsp"/>
-<h2>Корзина</h2>
+<h2>РљРѕСЂР·РёРЅР°</h2>
 <div class="card">
     <div class="card-body">
         <c:forEach items="${cartItems}" var="item">
@@ -15,18 +15,18 @@
                     <form method="post" action="${pageContext.request.contextPath}/cart/update" class="d-flex gap-2">
                         <input type="hidden" name="productId" value="${item.product.id}">
                         <input class="form-control form-control-sm" style="width:80px;" type="number" min="0" max="${item.product.quantity}" step="1" name="quantity" value="${item.qty}" required>
-                        <button class="btn btn-outline-secondary btn-sm" type="submit">Обновить</button>
+                        <button class="btn btn-outline-secondary btn-sm" type="submit">РћР±РЅРѕРІРёС‚СЊ</button>
                     </form>
                     <form method="post" action="${pageContext.request.contextPath}/cart/remove">
                         <input type="hidden" name="productId" value="${item.product.id}">
-                        <button class="btn btn-outline-danger btn-sm" type="submit">Удалить</button>
+                        <button class="btn btn-outline-danger btn-sm" type="submit">РЈРґР°Р»РёС‚СЊ</button>
                     </form>
                 </div>
             </div>
         </c:forEach>
         <div class="mt-3 d-flex justify-content-between">
-            <strong>Итого: ${cartTotal} ?</strong>
-            <a class="btn btn-primary" href="${pageContext.request.contextPath}/checkout">Оформить заказ</a>
+            <strong>РС‚РѕРіРѕ: ${cartTotal} ?</strong>
+            <a class="btn btn-primary" href="${pageContext.request.contextPath}/checkout">РћС„РѕСЂРјРёС‚СЊ Р·Р°РєР°Р·</a>
         </div>
     </div>
 </div>

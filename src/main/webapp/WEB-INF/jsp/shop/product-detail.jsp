@@ -7,24 +7,24 @@
         <div class="card">
             <div class="card-body">
                 <h2 class="mb-3">${product.name}</h2>
-                <p class="mb-1">Цена: <strong>${product.price} ?</strong></p>
-                <p class="mb-1">В наличии: ${product.quantity}</p>
-                <p class="text-muted">Категория: ${categoryName} <small>(ID: ${product.categoryId})</small></p>
+                <p class="mb-1">Р¦РµРЅР°: <strong>${product.price} ?</strong></p>
+                <p class="mb-1">Р’ РЅР°Р»РёС‡РёРё: ${product.quantity}</p>
+                <p class="text-muted">РљР°С‚РµРіРѕСЂРёСЏ: ${categoryName} <small>(ID: ${product.categoryId})</small></p>
             </div>
         </div>
     </div>
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <h5>Добавить в корзину</h5>
+                <h5>Р”РѕР±Р°РІРёС‚СЊ РІ РєРѕСЂР·РёРЅСѓ</h5>
                 <form method="post" action="${pageContext.request.contextPath}/cart/add">
                     <input type="hidden" name="productId" value="${product.id}">
                     <div class="mb-3">
-                        <label class="form-label">Количество</label>
+                        <label class="form-label">РљРѕР»РёС‡РµСЃС‚РІРѕ</label>
                         <input class="form-control" type="number" name="quantity" min="1" max="${product.quantity}" step="1" value="1" required>
                     </div>
-                    <button class="btn btn-primary" <c:if test="${product.quantity == 0}">disabled</c:if>>Добавить</button>
-                    <a class="btn btn-outline-secondary" href="${pageContext.request.contextPath}/products">Назад к каталогу</a>
+                    <button class="btn btn-primary" <c:if test="${product.quantity == 0}">disabled</c:if>>Р”РѕР±Р°РІРёС‚СЊ</button>
+                    <a class="btn btn-outline-secondary" href="${pageContext.request.contextPath}/products">РќР°Р·Р°Рґ Рє РєР°С‚Р°Р»РѕРіСѓ</a>
                 </form>
             </div>
         </div>
